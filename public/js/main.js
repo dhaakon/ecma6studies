@@ -33,7 +33,24 @@
 },{}],2:[function(require,module,exports){
 'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _grid2 = require('./modules/grid.jsx');
+
+var _view = require('./modules/view.jsx');
+
+var _plotter = require('./modules/plotter.jsx');
+
+var domready = require('domready');
+
+domready(function () {
+  var canvas = document.getElementById('sketch');
+  var _grid = new _grid2.Grid(canvas);
+  _grid.draw();
+});
+
+},{"./modules/grid.jsx":3,"./modules/plotter.jsx":4,"./modules/view.jsx":5,"domready":1}],3:[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -41,11 +58,9 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var domready = require('domready');
-
 // functionality
 
-var Grid = (function () {
+var Grid = function () {
   function Grid(canvas) {
     _classCallCheck(this, Grid);
 
@@ -56,13 +71,13 @@ var Grid = (function () {
   }
 
   _createClass(Grid, [{
-    key: 'setup',
+    key: "setup",
     value: function setup() {
       this.ctx.strokeStyle = "rgba( 0, 0, 255, 0.4)";
       this.ctx.lineWidth = 0.5;
     }
   }, {
-    key: 'draw',
+    key: "draw",
     value: function draw() {
       var i = 1;
 
@@ -87,7 +102,7 @@ var Grid = (function () {
       }
     }
   }, {
-    key: 'size',
+    key: "size",
     get: function get() {
       return {
         width: this.canvas.width,
@@ -97,19 +112,31 @@ var Grid = (function () {
   }]);
 
   return Grid;
-})();
+}();
 
 // properties
 
 var _proto = Grid.prototype;
-_proto.amount = 23;
-
-domready(function () {
-  var _grid = new Grid(document.getElementById('sketch'));
-
-  _grid.draw();
-});
+_proto.amount = 230;
 
 exports.Grid = Grid;
 
-},{"domready":1}]},{},[2]);
+},{}],4:[function(require,module,exports){
+"use strict";
+
+},{}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var View = function View() {
+  _classCallCheck(this, View);
+};
+
+exports.View = View;
+
+},{}]},{},[2,3,4,5]);

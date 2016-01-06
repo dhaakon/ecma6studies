@@ -67,7 +67,7 @@ module.exports = function( grunt ){
           ]
         },
         files:{
-          'public/js/main.js':['src/js/app.jsx']
+          'public/js/main.js':['src/js/**/*.jsx']
         }
       }
     }
