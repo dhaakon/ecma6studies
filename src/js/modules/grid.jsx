@@ -1,4 +1,3 @@
-
 // functionality
 class Grid {
   constructor( canvas ) {
@@ -48,6 +47,6 @@ class Grid {
 
 // properties
 var _proto = Grid.prototype;
-_proto.amount = 230;
+_proto.amount = 100;
 
 export { Grid };

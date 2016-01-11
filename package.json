@@ -15,6 +15,7 @@
     "express": "^4.13.3",
     "grunt": "^0.4.5",
     "jade": "^1.11.0",
+    "json-loader": "^0.5.4",
     "matchdep": "^1.0.0",
     "node-bourbon": "^4.2.3",
     "node-neat": "^1.7.2"
@@ -28,6 +29,7 @@
     "grunt-express": "^1.4.1",
     "grunt-nodemon": "^0.4.1",
     "grunt-sass": "^1.1.0",
+    "grunt-svg2json": "^0.1.8",
     "jade": "^1.11.0"
   }
 }

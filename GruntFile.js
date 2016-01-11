@@ -43,6 +43,14 @@ module.exports = function( grunt ){
         }
     },
 
+    svg2json:{
+      dev:{
+        files:{
+          './public/json/logo.json':['./svg/logo.svg']
+        }
+      }
+    },
+
     nodemon:{
         src: {
             options: {
