@@ -2,7 +2,7 @@ module.exports = function( grunt ){
   require('matchdep').filterDev('*').forEach(grunt.loadNpmTasks);
 
   var path = require('path');
-  var sassPaths =  [require('node-bourbon').includePaths, require('node-neat').includePaths ];
+  var sassPaths =  [require('node-bourbon').includePaths, require('node-neat').includePaths];
   console.log(sassPaths);
 
   var options = {

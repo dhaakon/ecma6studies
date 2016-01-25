@@ -52,7 +52,7 @@ domready(function () {
 });
 
 },{"./modules/animation/logo.jsx":5,"./modules/grid.jsx":6,"./modules/plotter.jsx":7,"./modules/view.jsx":8,"domready":1}],3:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -72,18 +72,16 @@ var GFXChildren = (function () {
     console.log(this.groups);
   }
 
+  // Add the SVG group
+
   _createClass(GFXChildren, [{
-    key: 'push',
-    value: function push(child) {
+    key: "add",
+    value: function add(child) {
       this.children.push(child);
     }
   }, {
-    key: 'groups',
+    key: "groups",
     get: function get() {
-      console.log(new Array(10).join('-'));
-      console.log('children');
-      console.log(this);
-      console.log(new Array(10).join('-'));
       return this;
     }
   }]);
@@ -106,19 +104,20 @@ var LogoRenderer = (function () {
   }
 
   _createClass(LogoRenderer, [{
-    key: 'setupGraphics',
+    key: "setupGraphics",
     value: function setupGraphics() {
       for (var object in json) {
         var _main = json[object];
         for (var group in _main) {
+          console.log('-----');
+          console.log(group);
           var gfx = _main[group];
+          console.log(gfx);
           var _g = new Group(gfx);
 
-          this.graphics.push(_g);
+          this.graphics.add(_g);
         }
       }
-
-      console.log(this.graphics.groups);
 
       window.graphics = this.graphics;
     }

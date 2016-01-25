@@ -1,8 +1,13 @@
+* {
+  -webkit-margin-before: 0px;
+  -webkit-margin-after: 0px; }
+
 body {
-  background: black; }
+  background: black;
+  margin: 0px; }
 
 #sketch {
-  width: 1000px;
-  height: 1000px;
+  width: 800px;
+  height: 800px;
   background: white;
   margin: auto; }

@@ -6,15 +6,12 @@ class GFXChildren{
     console.log(this.groups);
   }
 
-  push(child){
+  // Add the SVG group 
+  add(child){
     this.children.push(child);
   }
   
   get groups(){
-    console.log(new Array(10).join('-'));
-    console.log('children');
-    console.log(this);
-    console.log(new Array(10).join('-'));
     return this;
   }
 }
@@ -36,14 +33,15 @@ class LogoRenderer {
     for( var object in json ){
       var _main = json[object];
       for( var group in _main){
+        console.log('-----');
+        console.log(group);
         var gfx = _main[group];
+        console.log(gfx);
         var _g = new Group( gfx );
 
-        this.graphics.push( _g );
+        this.graphics.add( _g );
       }
     }
-
-    console.log(this.graphics.groups);
 
     window.graphics = this.graphics;
   }
