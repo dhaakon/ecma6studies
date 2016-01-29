@@ -1,5 +1,7 @@
 var domready = require('domready');
 
+import "babel-polyfill";
+
 import { Grid } from './modules/grid.jsx'
 import { View } from './modules/view.jsx'
 import { Plotter } from './modules/plotter.jsx'

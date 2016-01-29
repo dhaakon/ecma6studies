@@ -1,3 +1,6 @@
+require("babel-core/register");
+require("babel-polyfill");
+
 module.exports = function( grunt ){
   require('matchdep').filterDev('*').forEach(grunt.loadNpmTasks);
 
@@ -14,6 +17,13 @@ module.exports = function( grunt ){
         sass: {
             files: 'src/sass/**/*.scss',
             tasks: ['sass:dist'],
+            options: {
+              spawn: true
+            }
+        },
+        svg2json: {
+            files: 'svg/**/*.svg',
+            tasks: ['svg2json', 'browserify:dist'],
             options: {
               spawn: true
             }
@@ -46,7 +56,7 @@ module.exports = function( grunt ){
     svg2json:{
       dev:{
         files:{
-          './public/json/logo.json':['./svg/logo.svg']
+          './src/js/json/logo.json':['./svg/logo.svg']
         }
       }
     },
@@ -69,8 +79,11 @@ module.exports = function( grunt ){
       dist:{
         options:{
           transform: [
-            ["babelify",
-              { "presets": ["es2015"] }
+            [
+             "babelify",
+              { "presets": ["es2015", "stage-0"] },
+              "debowerify",
+              "browserify-shim"
             ]
           ]
         },

@@ -11,3 +11,6 @@ body {
   height: 800px;
   background: white;
   margin: auto; }
+
+#svg {
+  display: none; }
