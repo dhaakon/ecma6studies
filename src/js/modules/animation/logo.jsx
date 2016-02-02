@@ -1,4 +1,4 @@
-import {LogoRenderer} from '../../graphics/renderer.jsx';
+import {LogoRenderer} from '../graphics/renderer.jsx';
 
 class LogoAnimation {
   constructor( canvas ){

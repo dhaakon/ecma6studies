@@ -47,6 +47,6 @@ class Grid {
 
 // properties
 var _proto = Grid.prototype;
-_proto.amount = 100;
+_proto.amount = 90;
 
 export { Grid };
