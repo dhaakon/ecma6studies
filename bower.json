@@ -1,0 +1,22 @@
+{
+  "name": "studies",
+  "description": "programmatic studies",
+  "main": "index.js",
+  "authors": [
+    "dhaakon"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/dhaakon/ecma6studies",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pixi.js": "pixi#^3.0.9",
+    "Matter": "matterjs#^0.9.0"
+  }
+}

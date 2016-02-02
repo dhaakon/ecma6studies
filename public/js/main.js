@@ -15080,6 +15080,8 @@ var _plotter = require('./modules/plotter.jsx');
 
 var _logo = require('./modules/animation/logo.jsx');
 
+var _matter = require('./modules/physics/matter.jsx');
+
 var domready = require('domready');
 
 domready(function () {
@@ -15090,7 +15092,7 @@ domready(function () {
   new _logo.LogoAnimation(canvas);
 });
 
-},{"./modules/animation/logo.jsx":224,"./modules/grid.jsx":228,"./modules/plotter.jsx":229,"./modules/view.jsx":230,"babel-polyfill":4,"domready":194}],223:[function(require,module,exports){
+},{"./modules/animation/logo.jsx":224,"./modules/grid.jsx":228,"./modules/physics/matter.jsx":229,"./modules/plotter.jsx":230,"./modules/view.jsx":231,"babel-polyfill":4,"domready":194}],223:[function(require,module,exports){
 module.exports={"letters":{"children":[{"children":[{"shape":{"type":"path","path":"M1684,625.2l-416,1.1c0,0,132-21.7,79.3-35.2c-34.7-8.8,100.7-127.8,58.8-127.8s109.6-130.1,59.9-130.1 s31.9-99.5,31.9-99.5s-43,57.6,0.1,79.2c34.9,17.5,74.3,92.8,54,135.3c-40,83.8,141,121.9,94,123.2 C1578,573.5,1684,625.2,1684,625.2z"},"fill":"#FF3000"}],"id":"A"},{"children":[{"name":"s2","children":[{"children":[{"shape":{"type":"path","d":"M 1075.2 614.1 m -9.6, 0 a 9.6,9.6 0 1,0 19.2,0 a 9.6,9.6 0 1,0 -19.2,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1160.7 438.7 m -9.6, 0 a 9.6,9.6 0 1,0 19.2,0 a 9.6,9.6 0 1,0 -19.2,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1079.4 438.7 m -9.6, 0 a 9.6,9.6 0 1,0 19.2,0 a 9.6,9.6 0 1,0 -19.2,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1162.8 284.7 m -9.6, 0 a 9.6,9.6 0 1,0 19.2,0 a 9.6,9.6 0 1,0 -19.2,0"}}]},{"children":[{"shape":{"type":"path","d":"M1077.3,612.2 1073.4,610.3 1157.3,441.2 1076.2,441.2 1163.1,282.1 1166.9,284.1 1083.4,436.9 1164.2,436.9 1077.3,612.2z"}}]}]},{"name":"s1","children":[{"children":[{"shape":{"type":"path","d":"M 1055.9 573.5 m -9.6, 0 a 9.6,9.6 0 1,0 19.2,0 a 9.6,9.6 0 1,0 -19.2,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1060.2 398.1 m -9.6, 0 a 9.6,9.6 0 1,0 19.2,0 a 9.6,9.6 0 1,0 -19.2,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1141.5 398.1 m -9.6, 0 a 9.6,9.6 0 1,0 19.2,0 a 9.6,9.6 0 1,0 -19.2,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1143.6 244.1 m -9.6, 0 a 9.6,9.6 0 1,0 19.2,0 a 9.6,9.6 0 1,0 -19.2,0"}}]},{"children":[{"shape":{"type":"path","d":"M1060.1,571.6 1056.3,569.7 1140.2,400.6 1059.1,400.6 1146,241.5 1149.8,243.5 1066.3,396.3 1147,396.3 1060.1,571.6z"}}]}]}],"id":"SS"},{"shape":{"type":"path","path":"M720.1,235.2c-107.7,0-156.1,83.4-156.1,191.1s48.4,198.9,156.1,198.9s195-50.2,195-195 C915.1,284.7,827.8,235.2,720.1,235.2z M720.8,511.1c-45.9,0-83.1-37.2-83.1-83.1c0-45.9,37.2-83.1,83.1-83.1 C766.7,345,836,382.2,836,428C836,473.9,766.7,511.1,720.8,511.1z"},"fill":"#FFC000","id":"O"},{"children":[{"children":[{"shape":{"type":"path","path":"M220,432.7V233.8c0,0,85.6,22.3,109.4,60.6s109.4,32.8,109.4,32.8S394,398.1,329.4,363 C276.6,334.3,220,432.7,220,432.7z"},"fill":"#80CFCB"}]},{"name":"id:B_x3B_transparency:0_x3B__1_","children":[{"children":[{"shape":{"type":"path","path":"M220,631.6V432.7c0,0,85.6,22.3,109.4,60.6s109.4,32.8,109.4,32.8S394,597,329.4,561.9 C276.6,533.2,220,631.6,220,631.6z"},"fill":"#80CFCB"}]}]}],"id":"B","transparency":"0"}]}}
 },{}],224:[function(require,module,exports){
 'use strict';
@@ -15591,7 +15593,24 @@ exports.Grid = Grid;
 },{}],229:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Physics = function Physics() {
+  _classCallCheck(this, Physics);
+};
+
+var proto = Physics.prototype;
+
+exports.Physics = Physics;
+
 },{}],230:[function(require,module,exports){
+"use strict";
+
+},{}],231:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15606,10 +15625,10 @@ var View = function View() {
 
 exports.View = View;
 
-},{}],231:[function(require,module,exports){
-"use strict";
-
 },{}],232:[function(require,module,exports){
 "use strict";
 
-},{}]},{},[222,224,225,226,227,228,229,230,231,232]);
+},{}],233:[function(require,module,exports){
+"use strict";
+
+},{}]},{},[222,224,225,226,227,228,229,230,231,232,233]);
