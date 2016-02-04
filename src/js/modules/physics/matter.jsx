@@ -39,6 +39,9 @@ class Physics {
   }
 
   addVertex( polygons ){
+    console.log(polygons);
+    polygons.sort();
+    
     var options = {
       isStatic: true,
       strokeStyle:'#ff00000',
@@ -47,6 +50,9 @@ class Physics {
 
     for( var polygon in polygons){
       var poly = polygons[polygon];
+      poly.sort( function( a, b ) {
+        return a.x - b.x;
+      });
 
       var body = Matter.Body.create( options );
       var _vert = Matter.Vertices.create( poly, body );
@@ -67,6 +73,8 @@ class Physics {
 
       console.log(poly[0].x, poly[0].y);
 
+      Matter.Body.translate( _body, vector );
+
       while( i < 3 ){
         var __vert = _body.vertices[i];
 
@@ -83,11 +91,6 @@ class Physics {
 
         ++i;
       }
-
-
-      Matter.Body.setVertices( _body, _vert );
-
-      Matter.Body.translate( _body, vector );
     }
 
   }
