@@ -28,14 +28,6 @@ class AnimatedPath{
     this.index = 0;
     this.dt = 0;
     this.index = 0;
-
-    console.log(this.x, this.y, this.width, this.height);
-    console.log(this.getTriangles( this.contours, 0.25));
-    console.log('matter path');
-    console.log( parse(this.d) );
-    //console.log(this.matterPath);
-    //console.log( matterSVG.pathToVertices( this.d, 30 ) );
-
   }
 
   draw(){
@@ -73,22 +65,17 @@ class AnimatedPath{
     ctx.save()
     ctx.lineWidth = 1;
 
-    var s = 200,
-        cols = 6,
-        size = 10;
-
     var fn = function(m){
       return m.positions.length > 0;
     };
 
-    var _triangles = this.getTriangles(this.contours, 10);
+    var _triangles = this.getTriangles(this.contours, this.threshold);
 
     ctx.save();
     ctx.translate( 0, 0 );
     ctx.beginPath();
 
     this.drawTriangles(ctx, _triangles);
-    
     ctx.lineWidth = 1;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
@@ -104,12 +91,85 @@ class AnimatedPath{
         var v0 = v[f[0]],
             v1 = v[f[1]],
             v2 = v[f[2]]
+
+        var p1, p2, p3;
+
+        ctx.beginPath();
         ctx.moveTo(v0[0], v0[1])
-        ctx.lineTo(v1[0], v1[1])
-        ctx.lineTo(v2[0], v2[1])
-        ctx.lineTo(v0[0], v0[1])
+
+        var _s = 5;
+        p1 = new Path2D()
+        p1.moveTo( v1[0], v1[1] );
+        p1.arc( v1[0], v1[1], _s, 0, 2 * Math.PI );
+
+        p2 = new Path2D()
+        p2.moveTo( v2[0], v2[1] )
+        p2.arc( v2[0], v2[1], _s, 0, 2 * Math.PI );
+
+        p3 = new Path2D()
+        p3.moveTo( v0[0], v0[1] )
+        p3.arc( v0[0], v0[1], _s, 0, 2 * Math.PI );
+
+        ctx.lineTo(v1[0], v1[1]);
+        ctx.lineTo(v2[0], v2[1]);
+        ctx.lineTo(v0[0], v0[1]);
+
+        ctx.strokeStyle = "green";
+        ctx.stroke();
+        ctx.closePath();
+        
+        ctx.save();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba( 255,0,0, 1)';
+        ctx.stroke(p1);
+        ctx.fill(p1);
+        ctx.closePath();
+
+        ctx.fillStyle = 'rgba(0,255,0,1)';
+        ctx.beginPath();
+        ctx.stroke(p2);
+        ctx.fill(p2);
+        ctx.closePath();
+
+        ctx.fillStyle = 'rgba( 0, 0, 255, 1)';
+        ctx.beginPath();
+        ctx.stroke(p3);
+        ctx.fill(p3);
+        ctx.closePath();
+
+        ctx.restore();
     })
   }
+
+  getPolygons( complex ){
+    var v = complex.positions;
+    var polygons = [];
+
+    var fn = ( f )=>{
+      var v0 = v[f[0]],
+          v1 = v[f[1]],
+          v2 = v[f[2]];
+
+      var x1, y1;
+      var x2, y2;
+      var x3, y3;
+
+      var p1, p2, p3;
+
+      p1 = { x: v1[0], y:v1[1] };
+      p2 = { x: v2[0], y:v2[1] };
+      p3 = { x: v0[0], y:v0[1] };
+
+      var t = [ p1, p2, p3 ];
+      polygons.push( t );
+    }
+
+    complex.cells.forEach( fn );
+
+    return polygons;
+  }
+
 
   toMesh( contents ){
     var threshold = 2;
@@ -166,6 +226,7 @@ class AnimatedPath{
 }
 
 var proto = AnimatedPath.prototype;
+proto.threshold = 50;
 
 proto.currentPoint = 0;
 

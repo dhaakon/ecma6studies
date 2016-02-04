@@ -16,7 +16,16 @@ domready( function(){
   var _physics = new Physics( canvas );
   var _canvas = _physics.physicsCanvas;
 
-  new LogoAnimation( _canvas );
+  var _l = new LogoAnimation( _canvas );
+
+  let animatedPaths = _l.graphics.paths;
+
+  for ( var path in animatedPaths ){
+    var _path = animatedPaths[path];
+    var _polygons = _path.getPolygons( _path.getTriangles( _path.contours, _path.threshold ) );
+
+    _physics.addVertex( _polygons );
+  }
 });
 
 

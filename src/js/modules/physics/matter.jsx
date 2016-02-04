@@ -1,24 +1,3 @@
-/*
- * // Matter.js module aliases
-var Engine = Matter.Engine,
-    World = Matter.World,
-    Bodies = Matter.Bodies;
-
-// create a Matter.js engine
-var engine = Engine.create(document.body);
-
-// create two boxes and a ground
-var boxA = Bodies.rectangle(400, 200, 80, 80);
-var boxB = Bodies.rectangle(450, 50, 80, 80);
-var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
-
-// add all of the bodies to the world
-World.add(engine.world, [boxA, boxB, ground]);
-
-// run the engine
-Engine.run(engine);
-*/
-
 let Engine = Matter.Engine,
     World = Matter.World,
     Bodies = Matter.Bodies;
@@ -33,36 +12,84 @@ class Physics {
         options:{
           width:1900,
           height:900,
-          background: '#ffffff',
-          wireframeBackground: '#ffffff'
+          showBounds: true,
+          showDebug: true,
+          showPositions: true,
+          hasBounds: true
         }
       }
     }
 
     this.engine = Engine.create( renderOptions );
 
+    this.engine.render.options.hasBounds = true;
     // create two boxes and a ground
-    var boxA = Bodies.rectangle(400, 200, 80, 80);
-    var boxB = Bodies.rectangle(450, 50, 80, 80);
-    var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
-
-    World.add( this.engine.world, [boxA, boxB, ground] );
     // add all of the bodies to the world
 
     this.canvas = canvas;
-
-    console.log(this.engine);
 
     // run the engine
     Engine.run( this.engine );
   }
 
   createWorld(){
-    
   }
 
   createBodies(){
-    
+  }
+
+  addVertex( polygons ){
+    var options = {
+      isStatic: true,
+      strokeStyle:'#ff00000',
+      showBounds: true
+    };
+
+    for( var polygon in polygons){
+      var poly = polygons[polygon];
+
+      var body = Matter.Body.create( options );
+      var _vert = Matter.Vertices.create( poly, body );
+
+      var _p = poly[2];
+      var _body = Bodies.fromVertices( _p.x, _p.y, _vert, options );
+
+      var _px = _p.x - _body.vertices[1].x;
+      var _py = _p.y - _body.vertices[1].y;
+      var vector = Matter.Vector.create(_px, _py);
+
+      //var _px = 0, _py = 0;
+
+      World.add( this.engine.world, _body );
+
+      console.log(poly);
+      var i = 0;
+
+      console.log(poly[0].x, poly[0].y);
+
+      while( i < 3 ){
+        var __vert = _body.vertices[i];
+
+        var vx = __vert.x;
+        var vy = __vert.y;
+        var __px = poly[i].x - vx;
+        var __py = poly[i].y - vy;
+
+        console.log('-----');
+        console.log('x');
+        console.log(vx, poly[i].x, __px);
+        console.log('y');
+        console.log(vy, poly[i].y, __py);
+
+        ++i;
+      }
+
+
+      Matter.Body.setVertices( _body, _vert );
+
+      Matter.Body.translate( _body, vector );
+    }
+
   }
 
   get physicsCanvas(){
@@ -71,5 +98,5 @@ class Physics {
 }
 
 let proto = Physics.prototype;
-
 export { Physics }
+
