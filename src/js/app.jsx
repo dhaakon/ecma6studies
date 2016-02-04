@@ -12,8 +12,11 @@ domready( function(){
   var canvas = document.getElementById('sketch');
   //let _grid = new Grid( canvas );
   //_grid.draw();
+  //
+  var _physics = new Physics( canvas );
+  var _canvas = _physics.physicsCanvas;
 
-  new LogoAnimation( canvas );
+  new LogoAnimation( _canvas );
 });
 
 

@@ -93,7 +93,7 @@ class LogoRenderer {
       this.ctx.stroke( p );
     }
     this.ctx.fillStyle = 'rgba( 255, 255, 255, 1 )';
-    this.ctx.fillRect(0,0,this.canvas.width, this.canvas.heigth);
+    //this.ctx.fillRect(0,0,this.canvas.width, this.canvas.heigth);
 
     window.requestAnimationFrame( ()=> this.animate() );
   }

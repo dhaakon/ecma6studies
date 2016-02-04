@@ -2,11 +2,12 @@ head
   title Studies
   link(rel="stylesheet", type="text/css", href="css/main.css")
 
+  script(src="vendor/pathseg.js", type="text/javascript")
   script(src="vendor/js/three.min.js", type="text/javascript")
-  script(src="vendor/js/matter.min.js", type="text/javascript")
-  script(src="vendor/js/pixi.min.js", type="text/javascript")
+  script(src="vendor/matter.min.js", type="text/javascript")
+  script(src="vendor/pixi.min.js", type="text/javascript")
 body
-  canvas#sketch(width='1900', height='900')
+  #sketch
   #svg
 
   script(src="js/main.js", type="text/javascript")

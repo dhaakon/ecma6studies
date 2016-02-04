@@ -8,6 +8,8 @@ var triangulate = require('triangulate-contours')
 var parse = require('parse-svg-path');
 var getBBox = require('svg-path-bounding-box');
 
+var matterSVG = Matter.Svg;
+
 class AnimatedPath{
   constructor( obj, canvas ){
     this.d = obj.shape.d || obj.shape.path;
@@ -29,6 +31,10 @@ class AnimatedPath{
 
     console.log(this.x, this.y, this.width, this.height);
     console.log(this.getTriangles( this.contours, 0.25));
+    console.log('matter path');
+    console.log( parse(this.d) );
+    //console.log(this.matterPath);
+    //console.log( matterSVG.pathToVertices( this.d, 30 ) );
 
   }
 
@@ -65,11 +71,11 @@ class AnimatedPath{
     ctx.fillStyle = '#121212'
     ctx.globalAlpha = 0.9
     ctx.save()
-    var s = 200;
     ctx.lineWidth = 1;
 
-    var cols = 6;
-    var size = 10;
+    var s = 200,
+        cols = 6,
+        size = 10;
 
     var fn = function(m){
       return m.positions.length > 0;
@@ -80,10 +86,13 @@ class AnimatedPath{
     ctx.save();
     ctx.translate( 0, 0 );
     ctx.beginPath();
+
     this.drawTriangles(ctx, _triangles);
+    
     ctx.lineWidth = 1;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
+
     ctx.stroke();
     ctx.restore();
   }
@@ -133,6 +142,10 @@ class AnimatedPath{
 
   get y(){
     return this.bbox.y1;
+  }
+
+  get matterPath(){
+    return matterSVG.pathToVertices( this.d, 30 );
   }
 
   get width(){
