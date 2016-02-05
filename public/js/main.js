@@ -15386,7 +15386,7 @@ var AnimatedPath = function () {
 }();
 
 var proto = AnimatedPath.prototype;
-proto.threshold = 2;
+proto.threshold = 8;
 
 proto.currentPoint = 0;
 
@@ -15717,6 +15717,8 @@ var Physics = function () {
 
     this.engine = Engine.create(renderOptions);
 
+    this.engine.world.gravity.y = -0.1;
+
     //this.engine.render.options.hasBounds = true;
     // create two boxes and a ground
     // add all of the bodies to the world
@@ -15724,7 +15726,7 @@ var Physics = function () {
     this.canvas = canvas;
     this.setupEvents();
     this.createWorld();
-    this.createBodies();
+    //this.createBodies();
 
     // run the engine
     Engine.run(this.engine);
@@ -15745,13 +15747,21 @@ var Physics = function () {
   }, {
     key: "createWorld",
     value: function createWorld() {
-      //var ground = Bodies.rectangle(this.width/2, this.height - 25, this.width, 50, { isStatic: true });
-      //World.add( this.engine.world, ground );
+      var ground = Bodies.rectangle(0, 0, 50, this.height, { isStatic: true });
+      var groundA = Bodies.rectangle(this.width - 50, 0, 50, this.height, { isStatic: true });
+      var groundB = Bodies.rectangle(this.width / 2, this.height + 25, this.width, 50, { isStatic: true });
+      World.add(this.engine.world, ground);
+      World.add(this.engine.world, groundA);
+      World.add(this.engine.world, groundB);
     }
   }, {
     key: "createBodies",
     value: function createBodies() {
       var _this = this;
+
+      var circs = [];
+      var count = 0;
+      var maxCount = 200;
 
       var fn = function fn() {
         var min = 5;
@@ -15759,15 +15769,25 @@ var Physics = function () {
         var _size = Math.max(min, Math.random() * max);
 
         var options = {
-          mass: _size,
+          mass: 100,
           restitution: 0.25
         };
 
+        if (count > maxCount) {
+          var _body = circs.splice(0, 1);
+          //console.log(_body);
+          World.remove(_this.engine.world, _body);
+        }
+
+        count++;
+
         var body = Bodies.circle(Math.random() * _this.width, Math.min(-50, Math.random() * -500), _size, options);
+        circs.push(body);
+
         World.add(_this.engine.world, body);
       };
 
-      var rate = 5000;
+      var rate = 2000;
       var m = 1000 / 60;
       var _interval = setInterval(fn, rate / m);
     }
@@ -15776,8 +15796,8 @@ var Physics = function () {
     value: function addVertex(polygons) {
       polygons.sort();
       var options = {
-        isStatic: true,
-        showBounds: true,
+        //isStatic: true,
+        //showBounds: true,
         restitution: 0.5,
         density: 100,
         //fillStyle:"black"
@@ -15808,7 +15828,7 @@ var Physics = function () {
 
         var _body = Bodies.fromVertices(0, 0, _vert, options);
         _body.render.fillStyle = 'black';
-        Matter.Body.set(_body, 'frictionAir', 1.95);
+        Matter.Body.set(_body, 'frictionAir', 0.001);
 
         var num = 0;
         var _p = poly[num];

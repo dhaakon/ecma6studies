@@ -226,7 +226,7 @@ class AnimatedPath{
 }
 
 var proto = AnimatedPath.prototype;
-proto.threshold = 2;
+proto.threshold = 8;
 
 proto.currentPoint = 0;
 
