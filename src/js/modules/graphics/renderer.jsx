@@ -82,6 +82,7 @@ class LogoRenderer {
   }
 
   animate(){
+    return
     for( var path in this.paths ){
       var _path = this.paths[path];
       var pt = _path.update();

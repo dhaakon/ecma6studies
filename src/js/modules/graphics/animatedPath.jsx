@@ -117,8 +117,8 @@ class AnimatedPath{
         ctx.strokeStyle = "green";
         ctx.stroke();
         ctx.closePath();
-        
         ctx.save();
+
         ctx.closePath();
         ctx.beginPath();
         ctx.fillStyle = 'rgba( 255,0,0, 1)';
@@ -157,9 +157,9 @@ class AnimatedPath{
 
       var p1, p2, p3;
 
-      p1 = { x: v1[0], y:v1[1] };
-      p2 = { x: v2[0], y:v2[1] };
-      p3 = { x: v0[0], y:v0[1] };
+      p1 = { x: Math.floor(v1[0]), y:Math.floor(v1[1]) };
+      p2 = { x: Math.floor(v2[0]), y:Math.floor(v2[1]) };
+      p3 = { x: Math.floor(v0[0]), y:Math.floor(v0[1]) };
 
       var t = [ p1, p2, p3 ];
       polygons.push( t );
@@ -226,7 +226,7 @@ class AnimatedPath{
 }
 
 var proto = AnimatedPath.prototype;
-proto.threshold = 10;
+proto.threshold = 2;
 
 proto.currentPoint = 0;
 
