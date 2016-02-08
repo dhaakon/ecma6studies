@@ -46,7 +46,7 @@ uniform float animate;
 uniform float opacity;
 
 void main() {
-  gl_FragColor = vec4(vec3(1.0), opacity);
+  gl_FragColor = vec4(vec3(0.4), opacity);
 }`;
 
 class ThreeD {
@@ -117,31 +117,59 @@ class ThreeD {
     const _attributes = this.getAnimationAttributes( _complex.positions, _complex.cells );
     const _geometry = new createGeom( _complex );
 
-    console.log(_attributes);
+    console.log(_attributes.centroid);
 
     const _materialOptions = {
+      color:0xffffffff,
       side: THREE.DoubleSide,
-      //vertexShader: vertShader,
-      //fragmentShader: fragShader,
+      vertexShader: vertShader,
+      fragmentShader: fragShader,
       wireframe: true,
-      transparent: true,
+      transparent: false,
       uniforms:{
         opacity: { type:'f', value: 1 },
         scale: { type:'f', value:0 },
         animate: { type:'f', value: 0 },
+        centroid: _attributes.centroid,
+        direction: _attributes.direction
       }
     };
 
     this.material = new THREE.ShaderMaterial( _materialOptions );
 
     this.mesh = new THREE.Mesh( _geometry, this.material );
-    //console.log(_geometry._bufferGeometry);
-
-    //_geometry.addAttribute("direction", _attributes['direction']);
-    //_geometry.addAttribute("centroid", _attributes['centroid']);
 
 
     this.scene.add( this.mesh );
+
+    this.animate();
+  }
+
+  animate(){
+    const delay = 0;
+    const interval = 0
+  // explode in
+    this.tweenr.to( this.material.uniforms.animate, {
+      value: 1, duration: 1.5, delay: delay, ease: 'expoInOut'
+    }).on('update',()=>{
+      console.log('update');
+      console.log(this.material.uniforms.animate);
+    });
+    
+    this.tweenr.to( this.material.uniforms.scale, {
+      value: 1, duration: 1, delay: delay
+    })
+
+    // explode out
+    this.tweenr.to( this.material.uniforms.scale, {
+      delay: interval, value: 0, duration: 0.75, ease: 'expoIn'
+    })
+    this.tweenr.to( this.material.uniforms.animate, {
+      duration: 0.75, value: 0, delay: interval
+    }).on('complete', () => {
+
+    })
+    console.log(this.material.uniforms.animate);
   }
 
   render(){
@@ -154,5 +182,6 @@ class ThreeD {
 }
 
 let proto = ThreeD.prototype;
+proto.tweenr = new Tweenr({ defaultEase: 'expoOut' });
 
 export { ThreeD }

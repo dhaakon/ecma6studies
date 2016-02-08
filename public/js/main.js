@@ -25437,7 +25437,7 @@ domready(function () {
 });
 
 },{"./modules/animation/logo.jsx":339,"./modules/grid.jsx":343,"./modules/physics/matter.jsx":344,"./modules/plotter.jsx":345,"./modules/threed/threed.jsx":347,"./modules/view.jsx":348,"babel-polyfill":6,"domready":233}],338:[function(require,module,exports){
-module.exports={"letters":{"children":[{"children":[{"shape":{"type":"path","path":"M1742.3,605l-448.6,1.1c0,0,142.3-23.5,85.4-37.9c-37.4-9.5,108.5-137.8,63.4-137.8 c-45.1,0,118.2-140.2,64.5-140.2s34.5-107.3,34.5-107.3s-46.4,62.1,0.1,85.4c37.6,18.9,80.1,100,58.2,145.9 c-43.1,90.3,152,132.9,101.4,132.9C1650.6,547.3,1742.3,605,1742.3,605z"},"fill":"#FF3000"}],"id":"A"},{"children":[{"name":"s2","children":[{"children":[{"shape":{"type":"path","d":"M 1085.8 593.2 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1178.1 404.1 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1090.4 404.1 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1180.3 238.1 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M1088.1,591.1 1084,589 1174.3,406.7 1086.9,406.7 1180.6,235.2 1184.7,237.4 1094.7,402.1 1181.8,402.1 1088.1,591.1z"}}]}]},{"name":"s1","children":[{"children":[{"shape":{"type":"path","d":"M 1065.1 549.4 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1069.7 360.2 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1157.3 360.2 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 1159.6 194.2 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M1069.6,547.3 1065.5,545.3 1155.9,363 1068.5,363 1162.2,191.4 1166.3,193.6 1076.2,358.4 1163.3,358.4 1069.6,547.3z"}}]}]}],"id":"SS"},{"shape":{"type":"path","path":"M703,184.6c-116.1,0-168.3,89.9-168.3,206S586.9,605,703,605s210.3-54,210.3-210.2 C913.3,238.1,819.2,184.6,703,184.6z M703.8,482.1c-49.5,0-89.5-40.1-89.5-89.5s40.1-89.5,89.5-89.5c49.5,0,124.2,40.1,124.2,89.5 S753.3,482.1,703.8,482.1z"},"fill":"#FFC000","id":"O"},{"children":[{"children":[{"shape":{"type":"path","path":"M163.8,397.5V183.1c0,0,92.3,24.1,118,65.4s118,35.4,118,35.4s-48.3,76.5-118,38.6 C224.8,291.5,163.8,397.5,163.8,397.5z"},"fill":"#80CFCB"}]},{"name":"id:B_x3B_transparency:0_x3B__1_","children":[{"children":[{"shape":{"type":"path","path":"M163.8,612V397.5c0,0,92.3,24.1,118,65.4s118,35.4,118,35.4s-48.3,76.5-118,38.6 C224.8,505.9,163.8,612,163.8,612z"},"fill":"#80CFCB"}]}]}],"id":"B","transparency":"0"}]}}
+module.exports={"letters":{"children":[{"shape":{"type":"path","path":"M703,184.6c-116.1,0-168.3,89.9-168.3,206S586.9,605,703,605s210.3-54,210.3-210.2 C913.3,238.1,819.2,184.6,703,184.6z M703.8,482.1c-49.5,0-89.5-40.1-89.5-89.5s40.1-89.5,89.5-89.5c49.5,0,124.2,40.1,124.2,89.5 S753.3,482.1,703.8,482.1z"},"fill":"#FFC000","id":"O"}]}}
 },{}],339:[function(require,module,exports){
 'use strict';
 
@@ -26793,7 +26793,7 @@ require('./TrackballControls.jsx');
 
 var vertShader = '\nattribute vec3 direction;\nattribute vec3 centroid;\n\nuniform float animate;\nuniform float opacity;\nuniform float scale;\n\n#define PI 3.14\n\nvoid main() {\n  // rotate the triangles\n  // each half rotates the opposite direction\n  float theta = (1.0 - animate) * (PI * 1.5) * sign(centroid.x);\n  mat3 rotMat = mat3(\n    vec3(cos(theta), 0.0, sin(theta)),\n    vec3(0.0, 1.0, 0.0),\n    vec3(-sin(theta), 0.0, cos(theta))\n  );\n\n  // push outward\n  vec3 offset = mix(vec3(0.0), direction.xyz * rotMat, 1.0 - animate);\n\n  // scale triangles to their centroids\n  vec3 tPos = mix(centroid.xyz, position.xyz, scale) + offset;\n\n  gl_Position = projectionMatrix *\n              modelViewMatrix *\n              vec4(tPos, 1.0);\n}';
 
-var fragShader = '\nuniform float animate;\nuniform float opacity;\n\nvoid main() {\n  gl_FragColor = vec4(vec3(1.0), opacity);\n}';
+var fragShader = '\nuniform float animate;\nuniform float opacity;\n\nvoid main() {\n  gl_FragColor = vec4(vec3(0.4), opacity);\n}';
 
 var ThreeD = function () {
   function ThreeD(canvas) {
@@ -26873,40 +26873,69 @@ var ThreeD = function () {
       var _attributes = this.getAnimationAttributes(_complex.positions, _complex.cells);
       var _geometry = new createGeom(_complex);
 
-      console.log(_attributes);
+      console.log(_attributes.centroid);
 
       var _materialOptions = {
+        color: 0xffffffff,
         side: THREE.DoubleSide,
-        //vertexShader: vertShader,
-        //fragmentShader: fragShader,
+        vertexShader: vertShader,
+        fragmentShader: fragShader,
         wireframe: true,
-        transparent: true,
+        transparent: false,
         uniforms: {
           opacity: { type: 'f', value: 1 },
           scale: { type: 'f', value: 0 },
-          animate: { type: 'f', value: 0 }
+          animate: { type: 'f', value: 0 },
+          centroid: _attributes.centroid,
+          direction: _attributes.direction
         }
       };
 
       this.material = new THREE.ShaderMaterial(_materialOptions);
 
       this.mesh = new THREE.Mesh(_geometry, this.material);
-      //console.log(_geometry._bufferGeometry);
-
-      //_geometry.addAttribute("direction", _attributes['direction']);
-      //_geometry.addAttribute("centroid", _attributes['centroid']);
 
       this.scene.add(this.mesh);
+
+      this.animate();
+    }
+  }, {
+    key: 'animate',
+    value: function animate() {
+      var _this = this;
+
+      var delay = 0;
+      var interval = 0;
+      // explode in
+      this.tweenr.to(this.material.uniforms.animate, {
+        value: 1, duration: 1.5, delay: delay, ease: 'expoInOut'
+      }).on('update', function () {
+        console.log('update');
+        console.log(_this.material.uniforms.animate);
+      });
+
+      this.tweenr.to(this.material.uniforms.scale, {
+        value: 1, duration: 1, delay: delay
+      });
+
+      // explode out
+      this.tweenr.to(this.material.uniforms.scale, {
+        delay: interval, value: 0, duration: 0.75, ease: 'expoIn'
+      });
+      this.tweenr.to(this.material.uniforms.animate, {
+        duration: 0.75, value: 0, delay: interval
+      }).on('complete', function () {});
+      console.log(this.material.uniforms.animate);
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this = this;
+      var _this2 = this;
 
       this.renderer.render(this.scene, this.camera);
 
       window.requestAnimationFrame(function () {
-        return _this.render();
+        return _this2.render();
       });
     }
   }]);
@@ -26915,6 +26944,7 @@ var ThreeD = function () {
 }();
 
 var proto = ThreeD.prototype;
+proto.tweenr = new _tweenr2.default({ defaultEase: 'expoOut' });
 
 exports.ThreeD = ThreeD;
 
