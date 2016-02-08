@@ -77,12 +77,9 @@ class LogoRenderer {
     for( let obj of shapes( gfx ) ){
       obj.gfx.forEach( (el, idx, arr) => this.draw(el) );
     }
-
-    this.animate();
   }
 
   animate(){
-    return
     for( var path in this.paths ){
       var _path = this.paths[path];
       var pt = _path.update();

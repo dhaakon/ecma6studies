@@ -2,7 +2,6 @@ let Engine = Matter.Engine,
     World = Matter.World,
     Bodies = Matter.Bodies;
 
-
 class Physics {
   constructor( canvas ){
     let renderOptions = {
@@ -13,45 +12,56 @@ class Physics {
           width: this.width,
           height: this.height,
           background:"#ffffff",
-          wireframes:false
-          //showBounds: true,
-          //showDebug: true,
-          //showPositions: true,
-          //hasBounds: true
+          wireframes:false,
+          positionIterations: 6,
+          velocityIterations: 4,
+          enableSleeping: false,
+          metrics: { extended: true }
         }
       }
-    }
+    };
 
     this.engine = Engine.create( renderOptions );
-    
-    this.engine.world.gravity.y = -0.1;
-
-    //this.engine.render.options.hasBounds = true;
-    // create two boxes and a ground
-    // add all of the bodies to the world
 
     this.canvas = canvas;
     this.setupEvents();
     this.createWorld();
-    //this.createBodies();
+
+    document.body.addEventListener( 'mousedown', ()=>{
+      console.log('mouse down');
+
+      for( var letter in this.letterShapes ){
+        var _shape = this.letterShapes[letter];
+
+        Matter.Sleeping.set( _shape, false);
+      };
+
+    });
 
     // run the engine
     Engine.run( this.engine );
   }
 
   setupEvents(){
-    Matter.Events.on( this.engine.render, "afterRender", this.afterRender);
-    Matter.Events.on( this.engine.render, "beforeRender", this.beforeRender);
+    Matter.Events.on( this.engine, "afterUpdate", this.afterUpdate.bind(this) );
+    Matter.Events.on( this.engine, "beforeUpdate", this.beforeUpdate.bind(this) );
+  }
 
+  beforeUpdate( event ){
   }
-  beforeRender( event ){
-  }
-  afterRender( event ){
+
+  afterUpdate( event ){
+    return
+    let _time = ~~(event.timestamp/10);
+
+    if (_time % this.rate == 1){
+      this.createBodies();
+    }
   }
 
   createWorld(){
-    var ground = Bodies.rectangle(0, 0, 50, this.height, { isStatic: true });
-    var groundA = Bodies.rectangle(this.width - 50, 0, 50, this.height, { isStatic: true });
+    var ground = Bodies.rectangle(-25, this.height/2, 50, this.height, { isStatic: true });
+    var groundA = Bodies.rectangle(this.width+25, this.height/2, 50, this.height, { isStatic: true });
     var groundB = Bodies.rectangle(this.width/2, this.height + 25, this.width, 50, { isStatic: true });
     World.add( this.engine.world, ground );
     World.add( this.engine.world, groundA );
@@ -59,10 +69,6 @@ class Physics {
   }
 
   createBodies(){
-    var circs = [];
-    var count = 0;
-    var maxCount = 200;
-
     let fn = ()=> {
       var min = 5;
       var max = 50;
@@ -70,64 +76,53 @@ class Physics {
 
       var options = {
         mass: 100,
-        restitution: 0.25
+        restitution: Math.random(),
+        render:{
+          fillStyle: 'black',
+          strokeStyle: 'black'
+        }
       };
 
-
-      if (count > maxCount){
-        var _body = circs.splice(0, 1);
-        //console.log(_body);
+      if ( this.count > this.maxCount){
+        var _body = this.circs.splice(0, 1);
         World.remove( this.engine.world, _body);
       }
 
-      count++;
+      this.count++;
 
       var body = Bodies.circle( Math.random() * this.width, Math.min( -50, Math.random() * -500 ), _size, options);
-      circs.push( body );
-      
+      this.circs.push( body );
+
       World.add( this.engine.world, body );
     }
 
-    var rate = 2000;
-    var m = 1000/60;
-    var _interval = setInterval( fn, rate/m );
+    fn();
   }
 
   addVertex( polygons ){
-    polygons.sort();
+    let _composite = Matter.Composite.create();
+
     var options = {
-      //isStatic: true,
-      //showBounds: true,
-      restitution: 0.5,
-      density: 100,
-      //fillStyle:"black"
-      //mass: Math.random() * 5,
+      isSleeping: true,
       render:{
-        fillStyle:'black',
-        strokeStyle:'black',
-        lineWidth: 0,
-        lineCap:'round'
+        lineWidth: 0
       }
     };
 
     for( var polygon in polygons){
       var poly = polygons[polygon];
+
       poly.sort( function( a, b ) {
         var x1 = b.x - a.x;
 
-        //return x1;
         return x1 == 0 ? a.y - b.y : a.x - b.x;
       });
-
-      poly.forEach( (p)=> console.log( p.x, p.y));
-
 
       var body = Matter.Body.create( options );
       var _vert = Matter.Vertices.create( poly, body );
 
       var _body = Bodies.fromVertices( 0, 0, _vert, options );
-      _body.render.fillStyle = 'black';
-      Matter.Body.set( _body, 'frictionAir', 0.001);
+      _body.render.fillStyle = Matter.Common.choose( [ '#666', '#777', '#222', '#333', '#444', '#555' ] );
 
       var num = 0;
       var _p = poly[ num ];
@@ -140,13 +135,13 @@ class Physics {
 
       var vector = Matter.Vector.create(_cx, _cy);
 
-      //var _px = 0, _py = 0;
-
-      World.add( this.engine.world, _body );
+      Matter.Composite.add( _composite, _body );
+      this.letterShapes.push( _body );
 
       Matter.Body.translate( _body, vector );
     }
-
+    World.add( this.engine.world, _composite );
+    this.composites.push( _composite );
   }
 
   get physicsCanvas(){
@@ -159,6 +154,14 @@ proto.bodies = [];
 
 proto.width = 1900;
 proto.height = 900;
+
+proto.rate = 10;
+proto.circs = [];
+proto.count = 0;
+proto.maxCount = 200;
+
+proto.letterShapes = [];
+proto.composites = [];
 
 export { Physics }
 
