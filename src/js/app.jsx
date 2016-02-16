@@ -1,6 +1,8 @@
+import "babel-polyfill";
+require("babel-core/register");
+
 var domready = require('domready');
 
-import "babel-polyfill";
 
 import { Grid } from './modules/grid.jsx'
 import { View } from './modules/view.jsx'
@@ -32,6 +34,9 @@ domready( function(){
 
     _threeD.create( _path.d );
   }
+
+  
+  //_threeD.explode();
   
   /*
   var _physics = new Physics( canvas );

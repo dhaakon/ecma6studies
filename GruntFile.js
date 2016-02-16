@@ -79,13 +79,10 @@ module.exports = function( grunt ){
       dist:{
         options:{
           transform: [
-            [
-             "babelify",
-              { "presets": ["es2015"] },
+             ["babelify", {'presets':'es2015'}],
               "debowerify",
               "browserify-shim"
             ]
-          ]
         },
         files:{
           'public/js/main.js':['src/js/**/*.jsx']

@@ -6,75 +6,28 @@ import shuffle from 'array-shuffle';
 import svgMesh3d from 'svg-mesh-3d';
 import triangleCentroid from 'triangle-centroid';
 import Tweenr from 'tweenr';
-import randomVec3 from 'gl-vec3/random'
+import randomVec3 from 'gl-vec3/random';
 
-require('./TrackballControls.jsx');
+import{ Tween, Timeline, Easing } from 'dhaak-anim';
+
+var maxWidth = 448;
+var maxHeight = 424;
+
+
+var _ = require('underscore');
+var svgBbox = require('svg-path-bounding-box');
 
 //var buffer = require('three-buffer-vertex-data')
 
-const vertShader = `
-attribute vec3 direction;
-attribute vec3 centroid;
 
-uniform float animate;
-uniform float opacity;
-uniform float scale;
+import { fragShader } from '../../shaders/frag.jsx';
+import { vertShader } from '../../shaders/vert.jsx';
 
-#define PI 3.14
+var OrbitControls = require('three-orbit-controls')(THREE);
 
-void main() {
-  // rotate the triangles
-  // each half rotates the opposite direction
-  float theta = (1.0 - animate) * (PI * 1.5) * sign(centroid.y);
-
-  mat3 rotMat = mat3(
-    vec3(cos(theta), 0.0, sin(theta)),
-    vec3(0.0, 1.0, 0.0),
-    vec3(-sin(theta), 0.0, cos(theta))
-  );
-  
-  // push outward
-  vec3 offset = mix(vec3(0.0), direction.xyz * rotMat, 1.0 - animate);
-  
-  // scale triangles to their centroids
-  vec3 tPos = mix(centroid.xyz, position.xyz, scale) + offset;
-  
-  gl_Position = projectionMatrix *
-              modelViewMatrix *
-              vec4(tPos, 1.0);
-}`
-
-const fragShader = `
-uniform float animate;
-uniform float opacity;
-
-void main() {
-  gl_FragColor = vec4(vec3(1.0), opacity);
-}`;
-
-class ThreeD {
-  constructor( canvas ){
-    this.canvas = canvas;
-
-    this.renderer = new THREE.WebGLRenderer({
-      canvas: this.canvas,
-      antialias: true,
-      background:'white',
-      devicePixelRatio: window.devicePixelRatio
-    });
-
-    this.scene = new THREE.Scene();
-
-    this.width = 1900;
-    this.height = 900;
-
-    this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height , 1, 1000 );
-    this.camera.position.set( 0, 0, 3 );
-
-    //this.controls = new THREE.TrackballControls( this.camera );
-    //this.controls.target.set( 0, 0, 5 )
-
-    this.render();
+class Letter {
+  constructor( svg ){
+    this.create( svg );
   }
 
   getAnimationAttributes( positions, cells ){
@@ -101,6 +54,14 @@ class ThreeD {
   }
 
   createMesh ( svg ){
+    var _bb = svgBbox(svg);
+
+    this.x = _bb.x1;
+    this.y = _bb.y1;
+
+    this.height = _bb.height;
+    this.width = _bb.width;
+
     let options = {
       scale:10,
       simplify: 0.01,
@@ -117,15 +78,13 @@ class ThreeD {
   create( svg ){
     let _complex = this.createMesh( svg );
     const _attributes = this.getAnimationAttributes( _complex.positions, _complex.cells );
+
     this.geometry = new createGeom( _complex );
-    console.log(this.geometry);
 
     // set up our geometry
     //this.geometry = new THREE.BufferGeometry()
 
     //buffer.index( this.geometry, _complex.cells );
-
-    //console.log(_attributes.direction, _attributes.centroid);
 
     //buffer.attr( this.geometry, 'position', _complex.positions)
     //buffer.attr( this.geometry,'direction', new THREE.BufferAttribute( (_attributes.direction), 3 ));
@@ -144,48 +103,120 @@ class ThreeD {
       uniforms:{
         opacity: { type:'f', value: 1 },
         scale: { type:'f', value:0 },
-        animate: { type:'f', value: 0 }
+        animate: { type:'f', value: 1 }
       }
     };
 
     this.material = new THREE.ShaderMaterial( _materialOptions );
-    const mesh = new THREE.Mesh( this.geometry, this.material );
+    this.mesh = new THREE.Mesh( this.geometry, this.material );
 
-    //console.log(mesh);
-    this.scene.add( mesh );
-    //console.log( this.geometry.getAttribute( 'centroid' ) );
+    //this.scene.add( mesh );
 
-    this.animate();
+    //this.animate();
+    //this.explode();
   }
 
-  animate(){
-    const delay = 0;
-    const interval = 0
-  // explode in
-    this.tweenr.to( this.material.uniforms.animate, {
-      value: 1, duration: 1.5, delay: delay, ease: 'expoInOut'
-    }).on('update',()=>{
-      
+  explode (){
+    let _t = new Tweenr();
+    const _delay = 1;
+
+    var options = {
+      value: 1,
+      duration: 1.5,
+      delay: _delay,
+      ease: 'expoInOut'
+    };
+
+    let node = [this.material.uniforms.animate, this.material.uniforms.scale]
+
+    var _reverse = {
+      value: 0,
+      duration: 0.75,
+      ease: 'expoIn',
+      delay: _delay
+    };
+
+    let _reverseFn = ()=> {
+      var _o = _.clone( options );
+      _o.value = 0;
+      _o.delay = 2;
+
+      _t.to( node[0], _o );
+      _t.to( node[1], _o ).on( 'complete' , ()=>{
+        _t.to( node[0], options ).on('complete', _reverseFn);
+        _t.to( node[1], options );
+      });
+    };
+
+    _t.to( node[0], options ).on('complete', _reverseFn);
+    _t.to( node[1], options );
+
+  }
+
+  get scale(){
+    return {
+      sy: Math.min( 1, this.height / maxHeight),
+      sx: Math.min( 1, this.width / maxWidth)
+    }
+  }
+
+}
+
+class ThreeD {
+  constructor( canvas ){
+    this.canvas = canvas;
+
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+      background:'white',
+      devicePixelRatio: window.devicePixelRatio
     });
+
+    this.scene = new THREE.Scene();
+
+    this.width = 1900;
+    this.height = 900;
+
+    this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height , 1, 1000 );
+    this.camera.position.set( 0, 0, 50 );
+
+    //this.camera.lookAt( new THREE.Vector3() );
     
-    this.tweenr.to( this.material.uniforms.scale, {
-      value: 1, duration: 1, delay: delay
-    })
+    //OrbitControls.prototype.target = new THREE.Vector3();
 
-    // explode out
-    this.tweenr.to( this.material.uniforms.scale, {
-      delay: interval, value: 0, duration: 0.75, ease: 'expoIn'
-    })
-    this.tweenr.to( this.material.uniforms.animate, {
-      duration: 0.75, value: 0, delay: interval
-    }).on('complete', () => {
+    //var controls = OrbitControls( this.camera );
 
-    })
+    this.render();
   }
 
-  
+  create( svg ){
+    let letter = new Letter( svg );
+
+    this.letters.push( letter );
+
+    this.scene.add( letter.mesh );
+
+    let _v = new THREE.Vector3( 0, 0, 0);
+
+    let _factor = 50;
+
+    let _x = letter.x / _factor;
+    let _y = letter.y / _factor;
+
+    letter.mesh.position.set( _x, _y, 0); 
+    letter.mesh.scale.set( letter.scale.sx, letter.scale.sy, 1);
+    letter.explode();
+
+    console.log(_x, _y);
+
+
+    //console.log( letter.width, letter.height );
+    //console.log( letter.scale.sx, letter.scale.sy );
+  }
 
   render(){
+    this.camera.position.set( this.camera.position.x, this.camera.position.y, this.camera.position.z - this.count );
     this.renderer.render( this.scene, this.camera );
 
     window.requestAnimationFrame( ()=> this.render() );
@@ -197,5 +228,7 @@ class ThreeD {
 let proto = ThreeD.prototype;
 proto.tweenr = new Tweenr({ defaultEase: 'expoOut' });
 proto.meshCount = 0;
+proto.letters = [];
+proto.count = 0.001;
 
 export { ThreeD }
