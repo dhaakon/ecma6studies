@@ -46,6 +46,7 @@
     "triangle-centroid": "^1.0.0",
     "triangulate-contours": "^1.0.2",
     "tweenr": "^2.1.3",
+    "underscore": "^1.8.3",
     "unindex-mesh": "^2.0.0"
   },
   "devDependencies": {

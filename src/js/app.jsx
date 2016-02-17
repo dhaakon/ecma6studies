@@ -27,13 +27,28 @@ domready( function(){
   //let _grid = new Grid( canvas );
   //_grid.draw();
   var _l = new LogoAnimation( _canvas );
-  let animatedPaths = _l.graphics.paths;
+  let groups = _l.graphics.groups;
+  console.log(groups);
 
-  for ( var path in animatedPaths ){
-    var _path = animatedPaths[path];
+  for( var _group in groups ){
+    var _g = groups[_group];
 
-    _threeD.create( _path.d );
+    console.log(_g);
+
+    for( var _p in _g.paths ){
+      var _path = _g.paths[_p];
+
+      _threeD.create( _path.d );
+    }
   }
+
+
+
+  //for ( var path in animatedPaths ){
+    //var _path = animatedPaths[path];
+
+    //_threeD.create( _path.d );
+  //}
 
   
   //_threeD.explode();
@@ -41,9 +56,6 @@ domready( function(){
   /*
   var _physics = new Physics( canvas );
   var _canvas = _physics.physicsCanvas;
-
-
-
   
 
   for ( var path in animatedPaths ){
