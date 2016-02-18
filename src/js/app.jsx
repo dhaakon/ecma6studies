@@ -38,7 +38,7 @@ domready( function(){
     for( var _p in _g.paths ){
       var _path = _g.paths[_p];
 
-      _threeD.create( _path.d );
+      _threeD.create( _path );
     }
   }
 

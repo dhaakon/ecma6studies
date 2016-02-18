@@ -29138,7 +29138,7 @@ domready(function () {
     for (var _p in _g.paths) {
       var _path = _g.paths[_p];
 
-      _threeD.create(_path.d);
+      _threeD.create(_path);
     }
   }
 
@@ -29162,8 +29162,8 @@ domready(function () {
   */
 });
 
-},{"./modules/animation/logo.jsx":348,"./modules/grid.jsx":352,"./modules/physics/matter.jsx":353,"./modules/plotter.jsx":354,"./modules/threed/threed.jsx":356,"./modules/view.jsx":357,"babel-core/register":7,"babel-polyfill":8,"domready":236}],347:[function(require,module,exports){
-module.exports={"letters":{"children":[{"children":[{"shape":{"type":"path","path":"M1558,605l-448.6,1.1c0,0,142.3-23.5,85.4-37.9c-37.4-9.5,108.5-137.8,63.4-137.8s118.2-140.2,64.5-140.2 c-53.6,0,34.5-107.3,34.5-107.3s-46.4,62.1,0.1,85.4c37.6,18.9,80.1,100,58.2,145.9c-43.1,90.3,152,132.9,101.4,132.9 C1466.3,547.3,1558,605,1558,605z"},"fill":"#FF3000"}],"id":"A"},{"children":[{"name":"s2","children":[{"children":[{"shape":{"type":"path","d":"M 901.5 593.2 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 993.8 404.1 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 906.1 404.1 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 996.1 238.1 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M903.8,591.1 899.7,589 990,406.7 902.7,406.7 996.4,235.2 1000.4,237.4 910.4,402.1 997.5,402.1 903.8,591.1z"}}]}]},{"name":"s1","children":[{"children":[{"shape":{"type":"path","d":"M 880.8 549.4 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 885.4 360.2 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 973 360.2 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M 975.4 194.2 m -10.4, 0 a 10.4,10.4 0 1,0 20.8,0 a 10.4,10.4 0 1,0 -20.8,0"}}]},{"children":[{"shape":{"type":"path","d":"M885.3,547.3 881.2,545.3 971.6,363 884.2,363 977.9,191.4 982,193.6 892,358.4 979,358.4 885.3,547.3z"}}]}]}],"id":"SS"},{"shape":{"type":"path","path":"M518.8,184.6c-116.1,0-168.3,89.9-168.3,206S402.6,605,518.8,605S729,551,729,394.9 C729,238.1,634.9,184.6,518.8,184.6z M519.6,482.1c-49.5,0-89.5-40.1-89.5-89.5s40.1-89.5,89.5-89.5c49.5,0,124.2,40.1,124.2,89.5 S569,482.1,519.6,482.1z"},"fill":"#FFC000","id":"O"},{"children":[{"children":[{"shape":{"type":"path","path":"M-20.4,397.5V183.1c0,0,92.3,24.1,118,65.4s118,35.4,118,35.4s-48.3,76.5-118,38.6 C40.5,291.5-20.4,397.5-20.4,397.5z"},"fill":"#80CFCB"}]},{"name":"id:B_x3B_transparency:0_x3B__1_","children":[{"children":[{"shape":{"type":"path","path":"M-20.4,612V397.5c0,0,92.3,24.1,118,65.4s118,35.4,118,35.4s-48.3,76.5-118,38.6 C40.5,505.9-20.4,612-20.4,612z"},"fill":"#80CFCB"}]}]}],"id":"B","transparency":"0"}]}}
+},{"./modules/animation/logo.jsx":348,"./modules/grid.jsx":352,"./modules/physics/matter.jsx":353,"./modules/plotter.jsx":354,"./modules/threed/threed.jsx":355,"./modules/view.jsx":356,"babel-core/register":7,"babel-polyfill":8,"domready":236}],347:[function(require,module,exports){
+module.exports={"letters":{"children":[{"shape":{"type":"path","path":"M716.788,206.06l-218.996,0.537c0,0,69.467-11.473,41.69-18.502 c-18.258-4.638,52.968-67.271,30.951-67.271s57.703-68.442,31.488-68.442C575.754,52.381,618.763,0,618.763,0 s-22.651,30.315,0.049,41.69c18.355,9.227,39.103,48.817,28.412,71.225c-21.041,44.082,74.202,64.879,49.501,64.879 C672.022,177.892,716.788,206.06,716.788,206.06z"},"fill":"#FF3000","id":"A"},{"shape":{"type":"path","path":"M422.317,102.907c-2.469,0-4.522,1.765-4.978,4.101H404.51l7.629-15.379c0.008,0,0.016,0.002,0.024,0.002 c2.804,0,5.077-2.273,5.077-5.077s-2.273-5.077-5.077-5.077c-2.503,0-4.571,1.815-4.988,4.198h-13.914l29.362-53.733 c0.268,0.044,0.537,0.083,0.817,0.083c2.804,0,5.077-2.273,5.077-5.077s-2.273-5.077-5.077-5.077c-2.804,0-5.077,2.273-5.077,5.077 c0,1.724,0.864,3.242,2.177,4.16l-29.813,54.568h-16.34c-0.12-0.685-0.372-1.323-0.737-1.884l39.992-73.229 c2.658-0.162,4.77-2.347,4.77-5.045c0-2.805-2.273-5.077-5.077-5.077c-2.804,0-5.077,2.272-5.077,5.077 c0,2.07,1.243,3.844,3.021,4.634l-39.333,72.035c-0.751-0.439-1.614-0.708-2.546-0.708c-2.804,0-5.077,2.273-5.077,5.077 s2.273,5.077,5.077,5.077c2.327,0,4.267-1.575,4.867-3.71H389.5l-8.35,15.283c-0.519-0.179-1.066-0.296-1.646-0.296 c-2.804,0-5.077,2.273-5.077,5.077s2.273,5.077,5.077,5.077c2.363,0,4.331-1.622,4.897-3.808H400.9l-32.165,64.863 c-0.501-0.166-1.027-0.277-1.583-0.277c-2.804,0-5.077,2.272-5.077,5.077c0,2.804,2.273,5.077,5.077,5.077 c2.804,0,5.077-2.273,5.077-5.077c0-1.442-0.607-2.737-1.573-3.661l32.739-66.002h14.024c0.277,1.068,0.89,1.99,1.723,2.663 l-41.293,83.364c-0.196-0.023-0.389-0.06-0.591-0.06c-2.804,0-5.077,2.273-5.077,5.077s2.273,5.077,5.077,5.077 s5.077-2.273,5.077-5.077c0-1.796-0.938-3.366-2.346-4.269l41.2-83.104c0.364,0.083,0.739,0.136,1.127,0.136 c2.804,0,5.077-2.273,5.077-5.077S425.121,102.907,422.317,102.907z M384.482,107.008c-0.201-1.029-0.711-1.944-1.432-2.649 l8.982-16.438h15.263c0.391,1.389,1.347,2.529,2.616,3.162l-7.897,15.925H384.482z"},"id":"SS"},{"shape":{"type":"path","path":"M263.225,0.83c-56.677,0-82.16,43.887-82.16,100.564c0,56.677,25.434,104.665,82.16,104.665 S365.84,179.697,365.84,103.493C365.84,26.947,319.902,0.83,263.225,0.83z M263.616,146.062c-24.165,0-43.692-19.576-43.692-43.692 c0-24.115,19.576-43.691,43.692-43.691c24.165,0,60.631,19.576,60.631,43.691C324.247,126.486,287.731,146.062,263.616,146.062z"},"fill":"#FFC000","id":"O"},{"shape":{"type":"path","path":"M53.521,134.689c-11.422-18.355-49.785-29.749-56.57-31.644 c5.476-8.847,31.757-48.367,56.57-34.896c34.026,18.502,57.605-18.844,57.605-18.844s-45.059,2.88-57.605-17.281 C40.975,11.862-4.084,0.098-4.084,0.098v102.665v2v102.714c0,0,29.73-51.796,57.605-36.662 c34.026,18.502,57.605-18.844,57.605-18.844S66.067,154.851,53.521,134.689z"},"fill":"#80CFCB","id":"B"}]}}
 },{}],348:[function(require,module,exports){
 'use strict';
 
@@ -30005,544 +30005,6 @@ exports.Physics = Physics;
 },{}],355:[function(require,module,exports){
 'use strict';
 
-/**
- * @author Eberhard Graether / http://egraether.com/
- * @author Mark Lundin 	/ http://mark-lundin.com
- * @author Simone Manini / http://daron1337.github.io
- * @author Luca Antiga 	/ http://lantiga.github.io
- */
-
-THREE.TrackballControls = function (object, domElement) {
-
-	var _this = this;
-	var STATE = { NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM_PAN: 4 };
-
-	this.object = object;
-	this.domElement = domElement !== undefined ? domElement : document;
-
-	// API
-
-	this.enabled = true;
-
-	this.screen = { left: 0, top: 0, width: 0, height: 0 };
-
-	this.rotateSpeed = 1.0;
-	this.zoomSpeed = 1.2;
-	this.panSpeed = 0.3;
-
-	this.noRotate = false;
-	this.noZoom = false;
-	this.noPan = false;
-
-	this.staticMoving = false;
-	this.dynamicDampingFactor = 0.2;
-
-	this.minDistance = 0;
-	this.maxDistance = Infinity;
-
-	this.keys = [65 /*A*/, 83 /*S*/, 68 /*D*/];
-
-	// internals
-
-	this.target = new THREE.Vector3();
-
-	var EPS = 0.000001;
-
-	var lastPosition = new THREE.Vector3();
-
-	var _state = STATE.NONE,
-	    _prevState = STATE.NONE,
-	    _eye = new THREE.Vector3(),
-	    _movePrev = new THREE.Vector2(),
-	    _moveCurr = new THREE.Vector2(),
-	    _lastAxis = new THREE.Vector3(),
-	    _lastAngle = 0,
-	    _zoomStart = new THREE.Vector2(),
-	    _zoomEnd = new THREE.Vector2(),
-	    _touchZoomDistanceStart = 0,
-	    _touchZoomDistanceEnd = 0,
-	    _panStart = new THREE.Vector2(),
-	    _panEnd = new THREE.Vector2();
-
-	// for reset
-
-	this.target0 = this.target.clone();
-	this.position0 = this.object.position.clone();
-	this.up0 = this.object.up.clone();
-
-	// events
-
-	var changeEvent = { type: 'change' };
-	var startEvent = { type: 'start' };
-	var endEvent = { type: 'end' };
-
-	// methods
-
-	this.handleResize = function () {
-
-		if (this.domElement === document) {
-
-			this.screen.left = 0;
-			this.screen.top = 0;
-			this.screen.width = window.innerWidth;
-			this.screen.height = window.innerHeight;
-		} else {
-
-			var box = this.domElement.getBoundingClientRect();
-			// adjustments come from similar code in the jquery offset() function
-			var d = this.domElement.ownerDocument.documentElement;
-			this.screen.left = box.left + window.pageXOffset - d.clientLeft;
-			this.screen.top = box.top + window.pageYOffset - d.clientTop;
-			this.screen.width = box.width;
-			this.screen.height = box.height;
-		}
-	};
-
-	this.handleEvent = function (event) {
-
-		if (typeof this[event.type] == 'function') {
-
-			this[event.type](event);
-		}
-	};
-
-	var getMouseOnScreen = (function () {
-
-		var vector = new THREE.Vector2();
-
-		return function getMouseOnScreen(pageX, pageY) {
-
-			vector.set((pageX - _this.screen.left) / _this.screen.width, (pageY - _this.screen.top) / _this.screen.height);
-
-			return vector;
-		};
-	})();
-
-	var getMouseOnCircle = (function () {
-
-		var vector = new THREE.Vector2();
-
-		return function getMouseOnCircle(pageX, pageY) {
-
-			vector.set((pageX - _this.screen.width * 0.5 - _this.screen.left) / (_this.screen.width * 0.5), (_this.screen.height + 2 * (_this.screen.top - pageY)) / _this.screen.width);
-
-			// screen.width intentional
-			return vector;
-		};
-	})();
-
-	this.rotateCamera = (function () {
-
-		var axis = new THREE.Vector3(),
-		    quaternion = new THREE.Quaternion(),
-		    eyeDirection = new THREE.Vector3(),
-		    objectUpDirection = new THREE.Vector3(),
-		    objectSidewaysDirection = new THREE.Vector3(),
-		    moveDirection = new THREE.Vector3(),
-		    angle;
-
-		return function rotateCamera() {
-
-			moveDirection.set(_moveCurr.x - _movePrev.x, _moveCurr.y - _movePrev.y, 0);
-			angle = moveDirection.length();
-
-			if (angle) {
-
-				_eye.copy(_this.object.position).sub(_this.target);
-
-				eyeDirection.copy(_eye).normalize();
-				objectUpDirection.copy(_this.object.up).normalize();
-				objectSidewaysDirection.crossVectors(objectUpDirection, eyeDirection).normalize();
-
-				objectUpDirection.setLength(_moveCurr.y - _movePrev.y);
-				objectSidewaysDirection.setLength(_moveCurr.x - _movePrev.x);
-
-				moveDirection.copy(objectUpDirection.add(objectSidewaysDirection));
-
-				axis.crossVectors(moveDirection, _eye).normalize();
-
-				angle *= _this.rotateSpeed;
-				quaternion.setFromAxisAngle(axis, angle);
-
-				_eye.applyQuaternion(quaternion);
-				_this.object.up.applyQuaternion(quaternion);
-
-				_lastAxis.copy(axis);
-				_lastAngle = angle;
-			} else if (!_this.staticMoving && _lastAngle) {
-
-				_lastAngle *= Math.sqrt(1.0 - _this.dynamicDampingFactor);
-				_eye.copy(_this.object.position).sub(_this.target);
-				quaternion.setFromAxisAngle(_lastAxis, _lastAngle);
-				_eye.applyQuaternion(quaternion);
-				_this.object.up.applyQuaternion(quaternion);
-			}
-
-			_movePrev.copy(_moveCurr);
-		};
-	})();
-
-	this.zoomCamera = function () {
-
-		var factor;
-
-		if (_state === STATE.TOUCH_ZOOM_PAN) {
-
-			factor = _touchZoomDistanceStart / _touchZoomDistanceEnd;
-			_touchZoomDistanceStart = _touchZoomDistanceEnd;
-			_eye.multiplyScalar(factor);
-		} else {
-
-			factor = 1.0 + (_zoomEnd.y - _zoomStart.y) * _this.zoomSpeed;
-
-			if (factor !== 1.0 && factor > 0.0) {
-
-				_eye.multiplyScalar(factor);
-
-				if (_this.staticMoving) {
-
-					_zoomStart.copy(_zoomEnd);
-				} else {
-
-					_zoomStart.y += (_zoomEnd.y - _zoomStart.y) * this.dynamicDampingFactor;
-				}
-			}
-		}
-	};
-
-	this.panCamera = (function () {
-
-		var mouseChange = new THREE.Vector2(),
-		    objectUp = new THREE.Vector3(),
-		    pan = new THREE.Vector3();
-
-		return function panCamera() {
-
-			mouseChange.copy(_panEnd).sub(_panStart);
-
-			if (mouseChange.lengthSq()) {
-
-				mouseChange.multiplyScalar(_eye.length() * _this.panSpeed);
-
-				pan.copy(_eye).cross(_this.object.up).setLength(mouseChange.x);
-				pan.add(objectUp.copy(_this.object.up).setLength(mouseChange.y));
-
-				_this.object.position.add(pan);
-				_this.target.add(pan);
-
-				if (_this.staticMoving) {
-
-					_panStart.copy(_panEnd);
-				} else {
-
-					_panStart.add(mouseChange.subVectors(_panEnd, _panStart).multiplyScalar(_this.dynamicDampingFactor));
-				}
-			}
-		};
-	})();
-
-	this.checkDistances = function () {
-
-		if (!_this.noZoom || !_this.noPan) {
-
-			if (_eye.lengthSq() > _this.maxDistance * _this.maxDistance) {
-
-				_this.object.position.addVectors(_this.target, _eye.setLength(_this.maxDistance));
-				_zoomStart.copy(_zoomEnd);
-			}
-
-			if (_eye.lengthSq() < _this.minDistance * _this.minDistance) {
-
-				_this.object.position.addVectors(_this.target, _eye.setLength(_this.minDistance));
-				_zoomStart.copy(_zoomEnd);
-			}
-		}
-	};
-
-	this.update = function () {
-
-		_eye.subVectors(_this.object.position, _this.target);
-
-		if (!_this.noRotate) {
-
-			_this.rotateCamera();
-		}
-
-		if (!_this.noZoom) {
-
-			_this.zoomCamera();
-		}
-
-		if (!_this.noPan) {
-
-			_this.panCamera();
-		}
-
-		_this.object.position.addVectors(_this.target, _eye);
-
-		_this.checkDistances();
-
-		_this.object.lookAt(_this.target);
-
-		if (lastPosition.distanceToSquared(_this.object.position) > EPS) {
-
-			_this.dispatchEvent(changeEvent);
-
-			lastPosition.copy(_this.object.position);
-		}
-	};
-
-	this.reset = function () {
-
-		_state = STATE.NONE;
-		_prevState = STATE.NONE;
-
-		_this.target.copy(_this.target0);
-		_this.object.position.copy(_this.position0);
-		_this.object.up.copy(_this.up0);
-
-		_eye.subVectors(_this.object.position, _this.target);
-
-		_this.object.lookAt(_this.target);
-
-		_this.dispatchEvent(changeEvent);
-
-		lastPosition.copy(_this.object.position);
-	};
-
-	// listeners
-
-	function keydown(event) {
-
-		if (_this.enabled === false) return;
-
-		_prevState = _state;
-
-		if (_state !== STATE.NONE) {
-
-			return;
-		} else if (event.keyCode === _this.keys[STATE.ROTATE] && !_this.noRotate) {
-
-			_state = STATE.ROTATE;
-		} else if (event.keyCode === _this.keys[STATE.ZOOM] && !_this.noZoom) {
-
-			_state = STATE.ZOOM;
-		} else if (event.keyCode === _this.keys[STATE.PAN] && !_this.noPan) {
-
-			_state = STATE.PAN;
-		}
-	}
-
-	function keyup(event) {
-
-		if (_this.enabled === false) return;
-
-		_state = _prevState;
-	}
-
-	function mousedown(event) {
-
-		if (_this.enabled === false) return;
-
-		if (_state === STATE.NONE) {
-
-			_state = event.button;
-		}
-
-		if (_state === STATE.ROTATE && !_this.noRotate) {
-
-			_moveCurr.copy(getMouseOnCircle(event.pageX, event.pageY));
-			_movePrev.copy(_moveCurr);
-		} else if (_state === STATE.ZOOM && !_this.noZoom) {
-
-			_zoomStart.copy(getMouseOnScreen(event.pageX, event.pageY));
-			_zoomEnd.copy(_zoomStart);
-		} else if (_state === STATE.PAN && !_this.noPan) {
-
-			_panStart.copy(getMouseOnScreen(event.pageX, event.pageY));
-			_panEnd.copy(_panStart);
-		}
-
-		document.addEventListener('mousemove', mousemove, false);
-		document.addEventListener('mouseup', mouseup, false);
-
-		_this.dispatchEvent(startEvent);
-	}
-
-	function mousemove(event) {
-
-		if (_this.enabled === false) return;
-
-		if (_state === STATE.ROTATE && !_this.noRotate) {
-
-			_movePrev.copy(_moveCurr);
-			_moveCurr.copy(getMouseOnCircle(event.pageX, event.pageY));
-		} else if (_state === STATE.ZOOM && !_this.noZoom) {
-
-			_zoomEnd.copy(getMouseOnScreen(event.pageX, event.pageY));
-		} else if (_state === STATE.PAN && !_this.noPan) {
-
-			_panEnd.copy(getMouseOnScreen(event.pageX, event.pageY));
-		}
-	}
-
-	function mouseup(event) {
-
-		if (_this.enabled === false) return;
-
-		_state = STATE.NONE;
-
-		document.removeEventListener('mousemove', mousemove);
-		document.removeEventListener('mouseup', mouseup);
-		_this.dispatchEvent(endEvent);
-	}
-
-	function mousewheel(event) {
-
-		if (_this.enabled === false) return;
-
-		var delta = 0;
-
-		if (event.wheelDelta) {
-
-			// WebKit / Opera / Explorer 9
-
-			delta = event.wheelDelta / 40;
-		} else if (event.detail) {
-
-			// Firefox
-
-			delta = -event.detail / 3;
-		}
-
-		_zoomStart.y += delta * 0.01;
-		_this.dispatchEvent(startEvent);
-		_this.dispatchEvent(endEvent);
-	}
-
-	function touchstart(event) {
-
-		if (_this.enabled === false) return;
-
-		switch (event.touches.length) {
-
-			case 1:
-				_state = STATE.TOUCH_ROTATE;
-				_moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-				_movePrev.copy(_moveCurr);
-				break;
-
-			default:
-				// 2 or more
-				_state = STATE.TOUCH_ZOOM_PAN;
-				var dx = event.touches[0].pageX - event.touches[1].pageX;
-				var dy = event.touches[0].pageY - event.touches[1].pageY;
-				_touchZoomDistanceEnd = _touchZoomDistanceStart = Math.sqrt(dx * dx + dy * dy);
-
-				var x = (event.touches[0].pageX + event.touches[1].pageX) / 2;
-				var y = (event.touches[0].pageY + event.touches[1].pageY) / 2;
-				_panStart.copy(getMouseOnScreen(x, y));
-				_panEnd.copy(_panStart);
-				break;
-
-		}
-
-		_this.dispatchEvent(startEvent);
-	}
-
-	function touchmove(event) {
-
-		if (_this.enabled === false) return;
-
-		switch (event.touches.length) {
-
-			case 1:
-				_movePrev.copy(_moveCurr);
-				_moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-				break;
-
-			default:
-				// 2 or more
-				var dx = event.touches[0].pageX - event.touches[1].pageX;
-				var dy = event.touches[0].pageY - event.touches[1].pageY;
-				_touchZoomDistanceEnd = Math.sqrt(dx * dx + dy * dy);
-
-				var x = (event.touches[0].pageX + event.touches[1].pageX) / 2;
-				var y = (event.touches[0].pageY + event.touches[1].pageY) / 2;
-				_panEnd.copy(getMouseOnScreen(x, y));
-				break;
-
-		}
-	}
-
-	function touchend(event) {
-
-		if (_this.enabled === false) return;
-
-		switch (event.touches.length) {
-
-			case 0:
-				_state = STATE.NONE;
-				break;
-
-			case 1:
-				_state = STATE.TOUCH_ROTATE;
-				_moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-				_movePrev.copy(_moveCurr);
-				break;
-
-		}
-
-		_this.dispatchEvent(endEvent);
-	}
-
-	function contextmenu(event) {
-
-		event.preventDefault();
-	}
-
-	this.dispose = function () {
-
-		this.domElement.removeEventListener('contextmenu', contextmenu, false);
-		this.domElement.removeEventListener('mousedown', mousedown, false);
-		this.domElement.removeEventListener('mousewheel', mousewheel, false);
-		this.domElement.removeEventListener('MozMousePixelScroll', mousewheel, false); // firefox
-
-		this.domElement.removeEventListener('touchstart', touchstart, false);
-		this.domElement.removeEventListener('touchend', touchend, false);
-		this.domElement.removeEventListener('touchmove', touchmove, false);
-
-		document.removeEventListener('mousemove', mousemove, false);
-		document.removeEventListener('mouseup', mouseup, false);
-
-		window.removeEventListener('keydown', keydown, false);
-		window.removeEventListener('keyup', keyup, false);
-	};
-
-	this.domElement.addEventListener('contextmenu', contextmenu, false);
-	this.domElement.addEventListener('mousedown', mousedown, false);
-	this.domElement.addEventListener('mousewheel', mousewheel, false);
-	this.domElement.addEventListener('MozMousePixelScroll', mousewheel, false); // firefox
-
-	this.domElement.addEventListener('touchstart', touchstart, false);
-	this.domElement.addEventListener('touchend', touchend, false);
-	this.domElement.addEventListener('touchmove', touchmove, false);
-
-	window.addEventListener('keydown', keydown, false);
-	window.addEventListener('keyup', keyup, false);
-
-	this.handleResize();
-
-	// force an update at start
-	this.update();
-};
-
-THREE.TrackballControls.prototype = Object.create(THREE.EventDispatcher.prototype);
-THREE.TrackballControls.prototype.constructor = THREE.TrackballControls;
-
-},{}],356:[function(require,module,exports){
-'use strict';
-
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -30603,9 +30065,10 @@ var svgBbox = require('svg-path-bounding-box');
 var OrbitControls = require('three-orbit-controls')(THREE);
 
 var Letter = (function () {
-  function Letter(svg) {
+  function Letter(svg, delay) {
     _classCallCheck(this, Letter);
 
+    this.delay = delay;
     this.create(svg);
   }
 
@@ -30650,9 +30113,9 @@ var Letter = (function () {
       this.width = _bb.width;
 
       var options = {
-        scale: 10,
-        simplify: 0.01,
-        randomization: 500
+        scale: 2,
+        simplify: 0.001,
+        randomization: 1500
       };
 
       var complex = (0, _svgMesh3d2.default)(svg, options);
@@ -30664,7 +30127,8 @@ var Letter = (function () {
   }, {
     key: 'create',
     value: function create(svg) {
-      var _complex = this.createMesh(svg);
+      var _complex = this.createMesh(svg.d);
+      this.fill = svg.fill;
       var _attributes = this.getAnimationAttributes(_complex.positions, _complex.cells);
 
       this.geometry = new createGeom(_complex);
@@ -30678,19 +30142,24 @@ var Letter = (function () {
       //buffer.attr( this.geometry,'direction', new THREE.BufferAttribute( (_attributes.direction), 3 ));
       //buffer.attr( this.geometry, 'centroid', new THREE.BufferAttribute( (_attributes.centroid), 3 ));
 
+      var _color = new THREE.Color(this.fill);
+      var v3 = new THREE.Vector3(_color.r, _color.g, _color.b);
+      console.log(v3);
+
       var _materialOptions = {
-        color: 0xffffffff,
+        color: 0xff000000,
         side: THREE.DoubleSide,
         vertexShader: _vert.vertShader,
         fragmentShader: _frag.fragShader,
-        wireframe: true,
+        wireframe: false,
         //wireframe: true,
         transparent: false,
         attributes: _attributes,
         uniforms: {
+          color: { type: 'c', value: _color },
           opacity: { type: 'f', value: 1 },
           scale: { type: 'f', value: 0 },
-          animate: { type: 'f', value: 1 }
+          animate: { type: 'f', value: 0 }
         }
       };
 
@@ -30706,31 +30175,30 @@ var Letter = (function () {
     key: 'explode',
     value: function explode() {
       var _t = new _tweenr2.default();
-      var _delay = 1;
+      var _delay = this.delay;
 
       var options = {
         value: 1,
-        duration: 1.5,
-        delay: _delay,
-        ease: 'expoInOut'
+        duration: 0.5,
+        delay: _delay
       };
 
       var node = [this.material.uniforms.animate, this.material.uniforms.scale];
 
       var _reverse = {
         value: 0,
-        duration: 0.75,
-        ease: 'expoIn',
-        delay: _delay
+        duration: 0.5,
+        ease: 'expoIn'
       };
 
       var _reverseFn = function _reverseFn() {
         var _o = _.clone(options);
         _o.value = 0;
-        _o.delay = 2;
+        _o.delay = 6;
 
         _t.to(node[0], _o);
         _t.to(node[1], _o).on('complete', function () {
+          options.delay = _delay + 4;
           _t.to(node[0], options).on('complete', _reverseFn);
           _t.to(node[1], options);
         });
@@ -30765,13 +30233,15 @@ var ThreeD = (function () {
       devicePixelRatio: window.devicePixelRatio
     });
 
+    this.renderer.setClearColor(0xffffff);
+
     this.scene = new THREE.Scene();
 
     this.width = 1900;
     this.height = 900;
 
     this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 1, 1000);
-    this.camera.position.set(0, 0, 50);
+    this.camera.position.set(0, 0, 7.5);
 
     //this.camera.lookAt( new THREE.Vector3() );
 
@@ -30785,7 +30255,7 @@ var ThreeD = (function () {
   _createClass(ThreeD, [{
     key: 'create',
     value: function create(svg) {
-      var letter = new Letter(svg);
+      var letter = new Letter(svg, 3 - this.letters.length);
 
       this.letters.push(letter);
 
@@ -30793,13 +30263,32 @@ var ThreeD = (function () {
 
       var _v = new THREE.Vector3(0, 0, 0);
 
-      var _factor = 50;
+      var _factor = 80;
 
       var _x = letter.x / _factor;
       var _y = letter.y / _factor;
 
-      letter.mesh.position.set(_x, _y, 0);
-      letter.mesh.scale.set(letter.scale.sx, letter.scale.sy, 1);
+      var elem = this.renderer.domElement,
+          boundingRect = elem.getBoundingClientRect(),
+          x = (letter.x - boundingRect.left) * (elem.width / boundingRect.width),
+          y = (letter.y - boundingRect.top) * (elem.height / boundingRect.height);
+
+      var vector = new THREE.Vector3(letter.x / this.width * 2 - 1, -(letter.y / this.height) * 2 + 1, 0.5);
+
+      //console.log(vector);
+
+      //var raycaster = new THREE.Raycaster(); // create once
+      //var mouse = new THREE.Vector2(); // create once
+
+      //mouse.x = ( event.clientX / renderer.domElement.width ) * 2 - 1;
+      //mouse.y = - ( event.clientY / renderer.domElement.height ) * 2 + 1;
+
+      //raycaster.setFromCamera( mouse, camera );
+
+      //var intersects = raycaster.intersectObjects( objects, recursiveFlag );
+
+      letter.mesh.position.set(_x - 3.5, _y, vector.z);
+      //letter.mesh.scale.set( letter.scale.sx, letter.scale.sy, 1);
       letter.explode();
 
       console.log(_x, _y);
@@ -30812,7 +30301,7 @@ var ThreeD = (function () {
     value: function render() {
       var _this = this;
 
-      this.camera.position.set(this.camera.position.x, this.camera.position.y, this.camera.position.z - this.count);
+      //this.camera.position.set( this.camera.position.x, this.camera.position.y, this.camera.position.z - this.count );
       this.renderer.render(this.scene, this.camera);
 
       window.requestAnimationFrame(function () {
@@ -30825,14 +30314,36 @@ var ThreeD = (function () {
 })();
 
 var proto = ThreeD.prototype;
-proto.tweenr = new _tweenr2.default({ defaultEase: 'expoOut' });
+proto.tweenr = new _tweenr2.default({ defaultEase: 'quadIn' });
 proto.meshCount = 0;
 proto.letters = [];
 proto.count = 0.001;
-
+function createNoisyEasing(randomProportion, easingFunction) {
+  var normalProportion = 1.0 - randomProportion;
+  return function (k) {
+    return randomProportion * Math.random() + normalProportion * easingFunction(k);
+  };
+}
 exports.ThreeD = ThreeD;
 
-},{"../../shaders/frag.jsx":360,"../../shaders/vert.jsx":361,"array-shuffle":5,"dhaak-anim":232,"gl-vec3/random":271,"mesh-reindex":281,"svg-mesh-3d":308,"svg-path-bounding-box":309,"three-orbit-controls":325,"three-simplicial-complex":326,"triangle-centroid":327,"tweenr":335,"underscore":340,"unindex-mesh":341}],357:[function(require,module,exports){
+/*
+ *
+
+function Point3D get3dPoint(Point2D point2D, int width,
+        int height, Matrix viewMatrix, Matrix projectionMatrix) {
+ 
+        double x = 2.0 * winX / clientWidth - 1;
+        double y = - 2.0 * winY / clientHeight + 1;
+        Matrix4 viewProjectionInverse = inverse(projectionMatrix *
+             viewMatrix);
+
+        Point3D point3D = new Point3D(x, y, 0); 
+        return viewProjectionInverse.multiply(point3D);
+}
+
+*/
+
+},{"../../shaders/frag.jsx":359,"../../shaders/vert.jsx":360,"array-shuffle":5,"dhaak-anim":232,"gl-vec3/random":271,"mesh-reindex":281,"svg-mesh-3d":308,"svg-path-bounding-box":309,"three-orbit-controls":325,"three-simplicial-complex":326,"triangle-centroid":327,"tweenr":335,"underscore":340,"unindex-mesh":341}],356:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30847,11 +30358,21 @@ var View = function View() {
 
 exports.View = View;
 
+},{}],357:[function(require,module,exports){
+"use strict";
+
 },{}],358:[function(require,module,exports){
 "use strict";
 
 },{}],359:[function(require,module,exports){
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var fragShader = "\nuniform float animate;\nuniform float opacity;\n\nuniform vec3 color;\n\nvoid main() {\n  gl_FragColor = vec4( color.rgb, opacity);\n  //gl_FragColor = vec4( vec3( 1.0, 0.0, 0.0), opacity);\n}\n";
+
+exports.fragShader = fragShader;
 
 },{}],360:[function(require,module,exports){
 "use strict";
@@ -30859,18 +30380,8 @@ exports.View = View;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var fragShader = "\nuniform float animate;\nuniform float opacity;\n\nvoid main() {\n  gl_FragColor = vec4(vec3(1.0), opacity);\n}\n";
-
-exports.fragShader = fragShader;
-
-},{}],361:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var vertShader = "\nattribute vec3 direction;\nattribute vec3 centroid;\n\nuniform float animate;\nuniform float opacity;\nuniform float scale;\n\n#define PI 3.14\n\nvoid main() {\n  // rotate the triangles\n  // each half rotates the opposite direction\n  float theta = (1.0 - animate) * (PI * 1.5) * sign(centroid.y);\n\n  mat3 rotMat = mat3(\n    vec3(cos(theta), 0.0, sin(theta)),\n    vec3(0.0, 1.0, 0.0),\n    vec3(-sin(theta), 0.0, cos(theta))\n  );\n\n  // push outward\n  vec3 offset = mix(vec3(0.0), direction.xyz * rotMat, 1.0 - animate);\n\n  // scale triangles to their centroids\n  vec3 tPos = mix(centroid.xyz, position.xyz, scale) + offset;\n\n  gl_Position = projectionMatrix *\n              modelViewMatrix *\n              vec4(tPos, 1.0);\n}\n";
+var vertShader = "\nattribute vec3 direction;\nattribute vec3 centroid;\n\nuniform float animate;\nuniform float opacity;\nuniform float scale;\n\n#define PI 3.14\n\nvoid main() {\n  // rotate the triangles\n  // each half rotates the opposite direction\n  float theta = (1.0 - animate) * (PI * 1.5) * sign(centroid.x);\n\n  mat3 rotMat = mat3(\n    vec3(cos(theta), 0.0, sin(theta)),\n    vec3(0.0, 1.0, 0.0),\n    vec3(-sin(theta), 0.0, cos(theta))\n  );\n\n  // push outward\n  vec3 offset = mix(vec3(0.0), direction.xyz * rotMat, 1.0 - animate);\n\n  // scale triangles to their centroids\n  vec3 tPos = mix(centroid.xyz, position.xyz, scale) + offset;\n\n  gl_Position = projectionMatrix *\n              modelViewMatrix *\n              vec4(tPos, 1.0);\n}\n";
 
 exports.vertShader = vertShader;
 
-},{}]},{},[346,348,349,350,351,352,353,354,355,356,357,358,359,360,361]);
+},{}]},{},[346,348,349,350,351,352,353,354,355,356,357,358,359,360]);

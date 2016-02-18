@@ -11,7 +11,7 @@ uniform float scale;
 void main() {
   // rotate the triangles
   // each half rotates the opposite direction
-  float theta = (1.0 - animate) * (PI * 1.5) * sign(centroid.y);
+  float theta = (1.0 - animate) * (PI * 1.5) * sign(centroid.x);
 
   mat3 rotMat = mat3(
     vec3(cos(theta), 0.0, sin(theta)),
