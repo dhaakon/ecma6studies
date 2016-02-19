@@ -8,7 +8,7 @@ var _svg = SVG('svg');
 function *shapes( json ){
   var clean = function( shape, parent ){
 
-    if(!shape.shape && !shape.groupShape){
+    if(!shape.shape){
       for(var child in shape.children){
         var _tmp = shape.children[child];
         clean(_tmp, parent);
@@ -155,7 +155,6 @@ class LogoRenderer {
 
       p.moveTo( pt.x, pt.y );
       p.arc( pt.x, pt.y, 1, 0, Math.PI * 2);
-      
       this.ctx.stroke( p );
     }
     this.ctx.fillStyle = 'rgba( 255, 255, 255, 1 )';

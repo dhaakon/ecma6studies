@@ -30482,7 +30482,7 @@ function shapes(json) {
       case 0:
         clean = function clean(shape, parent) {
 
-          if (!shape.shape && !shape.groupShape) {
+          if (!shape.shape) {
             for (var child in shape.children) {
               var _tmp = shape.children[child];
               clean(_tmp, parent);
@@ -30694,7 +30694,6 @@ var LogoRenderer = function () {
         var p = new Path2D();
          p.moveTo( pt.x, pt.y );
         p.arc( pt.x, pt.y, 1, 0, Math.PI * 2);
-        
         this.ctx.stroke( p );
       }
       this.ctx.fillStyle = 'rgba( 255, 255, 255, 1 )';
@@ -31167,17 +31166,15 @@ var Letter = function () {
       this.material = new THREE.ShaderMaterial(_materialOptions);
       this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-      //this.scene.add( mesh );
-
-      //this.animate();
-      //this.explode();
+      this.mesh.castShadow = true;
+      this.mesh.receiveShadow = false;
     }
   }, {
     key: 'explode',
     value: function explode() {
       var _t = new _tweenr2.default();
       var _delay = this.delay;
-      var _duration = 0.25;
+      var _duration = 0.95;
 
       var _ease = 'quadOut';
 
@@ -31241,16 +31238,52 @@ var ThreeD = function () {
     });
 
     this.renderer.setClearColor(0xffffff);
+    this.renderer.shadowMapEnabled = true;
+    this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
     this.scene = new THREE.Scene();
+
+    var geom = new THREE.PlaneGeometry(40, 40);
+    var mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wirefame: false });
+    this.ground = new THREE.Mesh(geom, mat);
+
+    this.scene.add(this.ground);
+
+    this.ground.castShadow = false;
+    this.ground.receiveShadow = true;
+    this.ground.position.set(-5, -5, 0);
+
+    mat.receiveShadow = true;
+    mat.castShadow = true;
 
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
-    this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 1, 1000);
-    this.camera.position.set(0, 0, 7);
+    this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 1, 100);
+    this.camera.position.set(0, 0, 10);
 
     this.camera.lookAt(new THREE.Vector3());
+
+    this.light = new THREE.DirectionalLight(0xffffff, 0.75);
+    this.light.position.set(0, 0, -5);
+    this.light.target = this.ground;
+
+    //this.light.target = new THREE.Vector3();
+
+    this.light.rotation.x = -45;
+
+    this.light.castShadow = true;
+    this.light.shadowDarkness = 1.5;
+    this.light.shadowCameraVisible = false;
+
+    this.light.shadowCameraFar = 400;
+    this.light.shadowCameraNear = 10;
+    this.light.shadowCameraLeft = -500;
+    this.light.shadowCameraRight = 500;
+    this.light.shadowCameraTop = 500;
+    this.light.shadowCameraBottom = -500;
+
+    this.scene.add(this.light);
 
     //OrbitControls.prototype.target = new THREE.Vector3();
 
@@ -31282,7 +31315,7 @@ var ThreeD = function () {
   }, {
     key: 'create',
     value: function create(svg) {
-      var letter = new Letter(svg, 10 - this.letters.length);
+      var letter = new Letter(svg, 18 - this.letters.length);
 
       this.letters.push(letter);
 
@@ -31300,7 +31333,8 @@ var ThreeD = function () {
       var vector = new THREE.Vector3(letter.x / (0.5 * 7.5), letter.y / (0.5 * 7.5), 0.5);
 
       console.log(_vv);
-      letter.mesh.position.set(_x - 3.5, _y + 0.2, 0.5);
+      letter.mesh.position.set(_x - 3.5, _y + 0.2, 2);
+      letter.mesh.rotation.x = 360 * Math.random();
       letter.explode();
 
       //console.log( letter.width, letter.height );
@@ -31313,6 +31347,10 @@ var ThreeD = function () {
 
       //this.camera.position.set( this.camera.position.x, this.camera.position.y, this.camera.position.z - this.count );
       this.renderer.render(this.scene, this.camera);
+      for (var _letter in this.letters) {
+        this.letters[_letter].mesh.rotation.y += 0.001; //Math.random() / 100
+        this.letters[_letter].mesh.rotation.x += 0.001; //Math.random() / 100
+      }
 
       window.requestAnimationFrame(function () {
         return _this.render();
@@ -31373,7 +31411,7 @@ exports.fragShader = fragShader;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var vertShader = "\nattribute vec3 direction;\nattribute vec3 centroid;\n\nuniform float animate;\nuniform float opacity;\nuniform float scale;\n\n#define PI 3.14\n\nvoid main() {\n  // rotate the triangles\n  // each half rotates the opposite direction\n  float theta = (1.0 - animate) * (PI * 0.5 ) * sign(centroid.x);\n\n  mat3 rotMat = mat3(\n    vec3(-cos(theta) * 2.0, 3.0, sin(theta) * 4.0),\n    vec3(4.0, 3.0, cos(theta) * 2.0),\n    vec3(-sin(theta) * 3.0, 3.0, 2.0 * cos(theta))\n  );\n\n  // push outward\n  vec3 offset = mix(vec3(0.0), direction.xyz * rotMat, 1.0 - animate);\n\n  // scale triangles to their centroids\n  vec3 tPos = mix(centroid.xyz, position.xyz, 1.0) + offset;\n  //vec3 tPos = vec3(0.0);\n\n  gl_Position = projectionMatrix *\n              modelViewMatrix *\n              vec4(tPos, 1.0);\n}\n";
+var vertShader = "\nattribute vec3 direction;\nattribute vec3 centroid;\n\nuniform float animate;\nuniform float opacity;\nuniform float scale;\n\n#define PI 3.14\n\nvoid main() {\n  // rotate the triangles\n  // each half rotates the opposite direction\n  float theta = (1.0 - animate) * (PI * 0.5 ) * sign(centroid.x);\n\n  mat3 rotMat = mat3(\n    vec3(-cos(theta) * 2.0, 3.0, sin(theta) * 4.0),\n    vec3(4.0, 3.0, cos(theta) * 2.0),\n    vec3(-sin(theta) * 3.0, 3.0, 2.0 * cos(theta))\n  );\n\n  // push outward\n  vec3 offset = mix(vec3(0.0), direction.xyz * rotMat, 1.0 - animate);\n\n  // scale triangles to their centroids\n  vec3 tPos = mix(centroid.xyz, position.xyz, scale) + offset;\n  //vec3 tPos = vec3(0.0);\n\n  gl_Position = projectionMatrix *\n              modelViewMatrix *\n              vec4(tPos, 1.0);\n}\n";
 
 exports.vertShader = vertShader;
 

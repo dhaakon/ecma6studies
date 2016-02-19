@@ -131,18 +131,14 @@ class Letter {
     this.material = new THREE.ShaderMaterial( _materialOptions );
     this.mesh = new THREE.Mesh( this.geometry, this.material );
 
-
-
-    //this.scene.add( mesh );
-
-    //this.animate();
-    //this.explode();
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = false;
   }
 
   explode (){
     let _t = new Tweenr();
     const _delay = this.delay;
-    const _duration = 0.25;
+    const _duration = 0.95;
 
     const _ease = 'quadOut';
 
@@ -202,17 +198,53 @@ class ThreeD {
     });
 
     this.renderer.setClearColor(0xffffff);
+    this.renderer.shadowMapEnabled = true;
+    this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
     this.scene = new THREE.Scene();
+
+    var geom = new THREE.PlaneGeometry( 40, 40 );
+    var mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wirefame:false });
+    this.ground = new THREE.Mesh( geom, mat );
+    
+    this.scene.add(this.ground);
+
+    this.ground.castShadow = false;
+    this.ground.receiveShadow = true;
+    this.ground.position.set( -5, -5, 0 );
+
+    mat.receiveShadow = true;
+    mat.castShadow = true;
 
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
-    this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height , 1, 1000 );
-    this.camera.position.set( 0, 0, 7 );
+    this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height , 1, 100 );
+    this.camera.position.set( 0, 0, 10 );
 
     this.camera.lookAt( new THREE.Vector3() );
+
+    this.light = new THREE.DirectionalLight( 0xffffff, 0.75);
+    this.light.position.set( 0, 0, -5);
+    this.light.target = this.ground;
+
+    //this.light.target = new THREE.Vector3();
+
+    this.light.rotation.x = -45;
+
+    this.light.castShadow = true;
+    this.light.shadowDarkness = 1.5;
+    this.light.shadowCameraVisible = false;
+
+    this.light.shadowCameraFar = 400;
+    this.light.shadowCameraNear = 10;
+    this.light.shadowCameraLeft = -500;
+    this.light.shadowCameraRight = 500;
+    this.light.shadowCameraTop = 500;
+    this.light.shadowCameraBottom = -500;
     
+    this.scene.add(this.light);
+
     //OrbitControls.prototype.target = new THREE.Vector3();
 
     //var controls = OrbitControls( this.camera );
@@ -240,7 +272,7 @@ class ThreeD {
   }
 
   create( svg ){
-    let letter = new Letter( svg, 10 - this.letters.length );
+    let letter = new Letter( svg, 18 - this.letters.length );
 
     this.letters.push( letter );
 
@@ -264,7 +296,8 @@ class ThreeD {
 
 
     console.log(_vv);
-    letter.mesh.position.set( _x - 3.5, _y + 0.2, 0.5 );
+    letter.mesh.position.set( _x - 3.5, _y + 0.2, 2 );
+    letter.mesh.rotation.x = 360 * Math.random();
     letter.explode();
 
     //console.log( letter.width, letter.height );
@@ -274,6 +307,10 @@ class ThreeD {
   render(){
     //this.camera.position.set( this.camera.position.x, this.camera.position.y, this.camera.position.z - this.count );
     this.renderer.render( this.scene, this.camera );
+    for (var _letter in this.letters ){
+      this.letters[_letter].mesh.rotation.y += 0.001//Math.random() / 100
+      this.letters[_letter].mesh.rotation.x += 0.001//Math.random() / 100
+    }
 
     window.requestAnimationFrame( ()=> this.render() );
   }
