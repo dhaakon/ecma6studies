@@ -16,8 +16,8 @@ domready( function(){
   var element = document.getElementById('sketch');
 
   var _canvas = document.createElement('canvas');
-  _canvas.width = 1900;
-  _canvas.height = 900;
+  _canvas.width = window.innerWidth;
+  _canvas.height = window.innerHeight;
 
   element.appendChild( _canvas );
 
@@ -33,10 +33,11 @@ domready( function(){
   for( var _group in groups ){
     var _g = groups[_group];
 
-    console.log(_g);
 
     for( var _p in _g.paths ){
       var _path = _g.paths[_p];
+      _path.bWidth = _g.width;
+      _path.bHeight = _g.height;
 
       _threeD.create( _path );
     }

@@ -12,8 +12,8 @@ var mat4 = require('gl-mat4');
 
 import{ Tween, Timeline, Easing } from 'dhaak-anim';
 
-var maxWidth = 448;
-var maxHeight = 424;
+var maxWidth = 151;
+var maxHeight = 163;
 
 
 var _ = require('underscore');
@@ -59,12 +59,12 @@ class Letter {
   createMesh ( svg ){
     var _bb = svgBbox(svg);
 
-    //this.x = _bb.x1;
-    //this.y = _bb.y1;
+    this.x = _bb.x1;
+    this.y = _bb.y1;
 
-    this.height = _bb.height;
     this.width = _bb.width;
-
+    this.height = _bb.height;
+    
     let options = {
       scale:40,
       simplify: 0.01,
@@ -79,11 +79,15 @@ class Letter {
   }
 
   create( svg ){
+    console.log(svg);
     const _d = new Date().getMilliseconds();
     console.log( _d );
     let _complex = this.createMesh( svg.d );
-    this.x = svg.x;
-    this.y = svg.y;
+    //this.x = svg.x;
+    //this.y = svg.y;
+
+    this.bWidth = svg.bWidth;
+    this.bHeight = svg.bHeight;
 
     console.log('elapsed time');
     console.log( (_d - new Date().getMilliseconds()) / 1000, ' seconds');
@@ -176,9 +180,11 @@ class Letter {
   }
 
   get scale(){
+    console.log(this.bWidth, this.bHeight, this.height, this.width);
+
     return {
-      sy: Math.min( 1, this.height / maxHeight),
-      sx: Math.min( 1, this.width / maxWidth)
+      sy: Math.min( 1, this.height / this.bHeight),
+      sx: Math.min( 1, this.width / this.bWidth)
     }
   }
 
@@ -199,8 +205,8 @@ class ThreeD {
 
     this.scene = new THREE.Scene();
 
-    this.width = 1900;
-    this.height = 900;
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
 
     this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height , 1, 1000 );
     this.camera.position.set( 0, 0, 7 );
@@ -231,41 +237,10 @@ class ThreeD {
 
     return point.unproject( this.camera );
     //return point;
-    
-    /*
-    var unproject = require('camera-unproject');
-    var elem = this.renderer.domElement,
-        boundingRect = elem.getBoundingClientRect();
-
-    var viewMatrix = this.camera.matrixWorldInverse.clone();
-    var projectionMatrix = this.camera.projectionMatrix.clone();
-    var combinedMatrix = new THREE.Matrix4().multiplyMatrices( projectionMatrix, viewMatrix );
-
-    var invProjection = new THREE.Matrix4().getInverse( combinedMatrix );
-
-    var point = [ point2d.x, point2d.y, 0 ];
-    var out = [];
-
-    var viewport = [ boundingRect.left, boundingRect.top, elem.width, elem.height ];
-
-    console.log(viewport, invProjection);
-    unproject( out, point, viewport, invProjection);
-    console.log(out);
-
-        //x = (letter.x - boundingRect.left) * (elem.width / boundingRect.width),
-        //y = (letter.y - boundingRect.top) * (elem.height / boundingRect.height);
-        //
-    var x = ((2 * point2d.x) / boundingRect.width) - 1;
-    var y = - ((2 *  point2d.y) / boundingRect.height) + 1;
-
-    var p3 = new THREE.Vector3( x, y, 0 );
-    
-    return invProjection.multiplyVector3(p3);
-    */
   }
 
   create( svg ){
-    let letter = new Letter( svg, 3 - this.letters.length );
+    let letter = new Letter( svg, 10 - this.letters.length );
 
     this.letters.push( letter );
 
@@ -275,9 +250,7 @@ class ThreeD {
 
     let _factor = 100;
 
-    console.log( letter.x / 660 );
-
-    let _x = (letter.x / 660) * 10;
+    let _x = (letter.x / 612) * 10;
     let _y = (letter.y) / _factor;
 
     var _vv = this.convertPoint( letter );
@@ -290,22 +263,8 @@ class ThreeD {
     );
 
 
-    //console.log(vector);
-
-    //var raycaster = new THREE.Raycaster(); // create once
-    //var mouse = new THREE.Vector2(); // create once
-
-    //mouse.x = ( event.clientX / renderer.domElement.width ) * 2 - 1;
-    //mouse.y = - ( event.clientY / renderer.domElement.height ) * 2 + 1;
-
-    //raycaster.setFromCamera( mouse, camera );
-
-    //var intersects = raycaster.intersectObjects( objects, recursiveFlag );
-    //console.log( _vv );
-
     console.log(_vv);
-    letter.mesh.position.set( _x - 2.45, _y - 0.35, 0.5 ); 
-    //letter.mesh.scale.set( letter.scale.sx, letter.scale.sy, 1);
+    letter.mesh.position.set( _x - 3.5, _y + 0.2, 0.5 );
     letter.explode();
 
     //console.log( letter.width, letter.height );
@@ -335,19 +294,3 @@ function createNoisyEasing(randomProportion, easingFunction) {
   }
 export { ThreeD }
 
-/*
- *
-
-function Point3D get3dPoint(Point2D point2D, int width,
-        int height, Matrix viewMatrix, Matrix projectionMatrix) {
- 
-        double x = 2.0 * winX / clientWidth - 1;
-        double y = - 2.0 * winY / clientHeight + 1;
-        Matrix4 viewProjectionInverse = inverse(projectionMatrix *
-             viewMatrix);
-
-        Point3D point3D = new Point3D(x, y, 0); 
-        return viewProjectionInverse.multiply(point3D);
-}
-
-*/

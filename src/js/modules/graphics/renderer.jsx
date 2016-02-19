@@ -8,22 +8,29 @@ var _svg = SVG('svg');
 function *shapes( json ){
   var clean = function( shape, parent ){
 
-    if(!shape.shape){
+    if(!shape.shape && !shape.groupShape){
       for(var child in shape.children){
         var _tmp = shape.children[child];
         clean(_tmp, parent);
       }
+    }else if( shape.groupShape ){
+      console.log(shape);
+      parent.push( shape );
+
     }else{
-      parent.push(shape);
+      var s = ( shape.groupShape ) ? { shape: shape, groupShape: true } : shape;
+      parent.push(s);
     }
     //return (shape.children) ? shape : clean(shape);
   }
 
   for( var object in json ){
     var _obj = json[object];
+
     _obj.gfx = [];
 
     var a = clean(_obj, _obj.gfx);
+
     delete _obj.children;
 
     yield _obj;
@@ -59,7 +66,8 @@ class Group {
   }
 
   create( obj, idx, array ){
-    let shape = obj.shape;
+    if ( obj.groupShape ) return;
+    let shape = obj.shape || obj.shape.shape;
     let _d = shape.d || shape.path;
 
     var p = new AnimatedPath( obj, this.canvas );
@@ -70,7 +78,7 @@ class Group {
   getBBox(){
     console.log('------');
     console.log(this.paths.length);
-    
+
     if (this.paths.length == 1) {
       var bb = this.paths[0].bbox;
       this.x1 = bb.x1;
@@ -132,6 +140,7 @@ class LogoRenderer {
     var gfx = json.letters.children;
 
     for( let obj of shapes( gfx ) ){
+      console.log(obj);
       var _group = new Group( obj, this.canvas );
       this.groups.push(_group);
     }
