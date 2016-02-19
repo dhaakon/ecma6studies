@@ -111,13 +111,16 @@ class Letter {
     var _color = new THREE.Color( this.fill );
     var v3 = new THREE.Vector3( _color.r, _color.g, _color.b );
 
+    var switch_ = Math.round( Math.random() );
+    console.log(switch_);
+
     const _materialOptions = {
       color:0xff000000,
       side: THREE.DoubleSide,
       vertexShader: vertShader,
       fragmentShader: fragShader,
-      wireframe: false,
-      //wireframe: true,
+      //wireframe: false,
+      wireframe: (switch_ === 0) ? true: false,
       transparent: false,
       attributes: _attributes,
       uniforms:{
@@ -206,15 +209,10 @@ class ThreeD {
     var geom = new THREE.PlaneGeometry( 40, 40 );
     var mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wirefame:false });
     this.ground = new THREE.Mesh( geom, mat );
-    
     this.scene.add(this.ground);
 
-    this.ground.castShadow = false;
-    this.ground.receiveShadow = true;
-    this.ground.position.set( -5, -5, 0 );
 
-    mat.receiveShadow = true;
-    mat.castShadow = true;
+    this.ground.position.set( -5, -5, 0 );
 
     this.width = window.innerWidth;
     this.height = window.innerHeight;
@@ -223,31 +221,6 @@ class ThreeD {
     this.camera.position.set( 0, 0, 10 );
 
     this.camera.lookAt( new THREE.Vector3() );
-
-    this.light = new THREE.DirectionalLight( 0xffffff, 0.75);
-    this.light.position.set( 0, 0, -5);
-    this.light.target = this.ground;
-
-    //this.light.target = new THREE.Vector3();
-
-    this.light.rotation.x = -45;
-
-    this.light.castShadow = true;
-    this.light.shadowDarkness = 1.5;
-    this.light.shadowCameraVisible = false;
-
-    this.light.shadowCameraFar = 400;
-    this.light.shadowCameraNear = 10;
-    this.light.shadowCameraLeft = -500;
-    this.light.shadowCameraRight = 500;
-    this.light.shadowCameraTop = 500;
-    this.light.shadowCameraBottom = -500;
-    
-    this.scene.add(this.light);
-
-    //OrbitControls.prototype.target = new THREE.Vector3();
-
-    //var controls = OrbitControls( this.camera );
 
     this.render();
   }
@@ -272,7 +245,7 @@ class ThreeD {
   }
 
   create( svg ){
-    let letter = new Letter( svg, 18 - this.letters.length );
+    let letter = new Letter( svg, 30 - this.letters.length );
 
     this.letters.push( letter );
 
@@ -297,7 +270,7 @@ class ThreeD {
 
     console.log(_vv);
     letter.mesh.position.set( _x - 3.5, _y + 0.2, 2 );
-    letter.mesh.rotation.x = 360 * Math.random();
+    //letter.mesh.rotation.x = 360 * Math.random();
     letter.explode();
 
     //console.log( letter.width, letter.height );
@@ -308,8 +281,8 @@ class ThreeD {
     //this.camera.position.set( this.camera.position.x, this.camera.position.y, this.camera.position.z - this.count );
     this.renderer.render( this.scene, this.camera );
     for (var _letter in this.letters ){
-      this.letters[_letter].mesh.rotation.y += 0.001//Math.random() / 100
-      this.letters[_letter].mesh.rotation.x += 0.001//Math.random() / 100
+      //this.letters[_letter].mesh.rotation.y += 0.001//Math.random() / 100
+      //this.letters[_letter].mesh.rotation.x += 0.001//Math.random() / 100
     }
 
     window.requestAnimationFrame( ()=> this.render() );

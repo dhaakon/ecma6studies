@@ -28,7 +28,6 @@ domready( function(){
   //_grid.draw();
   var _l = new LogoAnimation( _canvas );
   let groups = _l.graphics.groups;
-  console.log(groups);
 
   for( var _group in groups ){
     var _g = groups[_group];
