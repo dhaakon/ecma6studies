@@ -138,21 +138,22 @@ class Letter {
   explode (){
     let _t = new Tweenr();
     const _delay = this.delay;
+    const _duration = 0.25;
 
     const _ease = 'quadOut';
 
     var options = {
       value: 1,
-      duration: 0.5,
+      duration: _duration,
       delay: _delay,
       ease: _ease
     };
 
-    let node = [this.material.uniforms.animate, this.material.uniforms.scale]
+    let node = [ this.material.uniforms.animate, this.material.uniforms.scale ]
 
     var _reverse = {
       value: 0,
-      duration: 0.5,
+      duration: _duration,
       ease:_ease
     };
 
@@ -202,7 +203,7 @@ class ThreeD {
     this.height = 900;
 
     this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height , 1, 1000 );
-    this.camera.position.set( 0, 0, 10 );
+    this.camera.position.set( 0, 0, 7 );
 
     this.camera.lookAt( new THREE.Vector3() );
     
@@ -231,8 +232,6 @@ class ThreeD {
     return point.unproject( this.camera );
     //return point;
     
-
-
     /*
     var unproject = require('camera-unproject');
     var elem = this.renderer.domElement,
@@ -285,8 +284,8 @@ class ThreeD {
 
 
     var vector = new THREE.Vector3( 
-        ( letter.x / ( 0.5 * 7.5)), 
-        ( letter.y / ( 0.5 * 7.5)), 
+        ( letter.x / ( 0.5 * 7.5 ) ), 
+        ( letter.y / ( 0.5 * 7.5 ) ), 
         0.5
     );
 
@@ -305,7 +304,7 @@ class ThreeD {
     //console.log( _vv );
 
     console.log(_vv);
-    letter.mesh.position.set( _x, _y, 0.5 ); 
+    letter.mesh.position.set( _x - 2.45, _y - 0.35, 0.5 ); 
     //letter.mesh.scale.set( letter.scale.sx, letter.scale.sy, 1);
     letter.explode();
 

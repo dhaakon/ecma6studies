@@ -10,10 +10,10 @@ module.exports = function( grunt ){
 
   var options = {
     watch : {
-       app: {
-            files: ['src/js/**/*.jsx', 'src/js/**/*.jade'],
-            tasks: ['browserify:dist'],
-        },
+       //app: {
+            //files: ['src/js/**/*.jsx', 'src/js/**/*.jade'],
+            //tasks: ['browserify:dist'],
+        //},
         sass: {
             files: 'src/sass/**/*.scss',
             tasks: ['sass:dist'],
@@ -82,7 +82,8 @@ module.exports = function( grunt ){
              ["babelify", {'presets':'es2015'}],
               "debowerify",
               "browserify-shim"
-            ]
+            ],
+          watch: true
         },
         files:{
           'public/js/main.js':['src/js/**/*.jsx']
@@ -93,6 +94,6 @@ module.exports = function( grunt ){
 
   grunt.initConfig( options );
 
-  grunt.registerTask( 'default', [ 'browserify:dist','concurrent' ] );
+  grunt.registerTask( 'default', [ 'browserify:dist','watch' ] );
 };
 
