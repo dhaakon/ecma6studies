@@ -37,7 +37,6 @@ domready( function(){
       var _path = _g.paths[_p];
       _path.bWidth = _g.width;
       _path.bHeight = _g.height;
-
       _threeD.create( _path );
     }
   }
