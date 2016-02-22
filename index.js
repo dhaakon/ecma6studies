@@ -17,6 +17,6 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-var server = app.listen( 3000, function(){
+var server = app.listen( process.env.PORT || 3000, function(){
 
 });
