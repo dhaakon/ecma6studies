@@ -71,6 +71,7 @@ class Group {
     let _d = shape.d || shape.path;
 
     var p = new AnimatedPath( obj, this.canvas );
+    p.complex = shape.complex;
 
     this.paths.push( p );
   }

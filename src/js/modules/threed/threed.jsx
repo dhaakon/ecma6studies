@@ -59,11 +59,6 @@ class Letter {
   createMesh ( svg ){
     var _bb = svgBbox(svg);
 
-    this.x = _bb.x1;
-    this.y = _bb.y1;
-
-    this.width = _bb.width;
-    this.height = _bb.height;
     
     let options = {
       scale:40,
@@ -82,7 +77,14 @@ class Letter {
     console.log(svg);
     const _d = new Date().getMilliseconds();
     console.log( _d );
-    let _complex = this.createMesh( svg.d );
+
+    let _complex = svg.complex.complex;
+
+    this.x = svg.complex.x;
+    this.y = svg.complex.y;
+
+    this.width = svg.complex.width;
+    this.height = svg.complex.height;
     //this.x = svg.x;
     //this.y = svg.y;
 
@@ -112,7 +114,6 @@ class Letter {
     var v3 = new THREE.Vector3( _color.r, _color.g, _color.b );
 
     var switch_ = Math.round( Math.random() );
-    console.log(switch_);
 
     const _materialOptions = {
       color:0xff000000,
@@ -166,6 +167,7 @@ class Letter {
       _o.delay = 6;
 
       _t.to( node[0], _o );
+      _o.value = 0.2;
       _t.to( node[1], _o ).on( 'complete' , ()=>{
         options.delay = _delay + 4;
         _t.to( node[0], options ).on('complete', _reverseFn);
@@ -217,8 +219,8 @@ class ThreeD {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
-    this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height , 1, 100 );
-    this.camera.position.set( 0, 0, 10 );
+    this.camera = new THREE.PerspectiveCamera( 75, this.width / this.height , 0.1, 100 );
+    this.camera.position.set( 0, 0, 8.5 );
 
     this.camera.lookAt( new THREE.Vector3() );
 
@@ -245,7 +247,7 @@ class ThreeD {
   }
 
   create( svg ){
-    let letter = new Letter( svg, 30 - this.letters.length );
+    let letter = new Letter( svg, Math.random() * 5 );
 
     this.letters.push( letter );
 
@@ -258,6 +260,7 @@ class ThreeD {
     let _x = (letter.x / 612) * 10;
     let _y = (letter.y) / _factor;
 
+    console.log(letter);
     var _vv = this.convertPoint( letter );
 
 
