@@ -37,6 +37,12 @@ domready( function(){
       var _path = _g.paths[_p];
       _path.bWidth = _g.width;
       _path.bHeight = _g.height;
+<<<<<<< HEAD
+=======
+
+      console.log(_path);
+
+>>>>>>> fd26fa02f1503a3abaae714e28859f9f9c26457b
       _threeD.create( _path );
     }
   }

@@ -24,11 +24,84 @@ var svgBbox = require('svg-path-bounding-box');
 
 import { fragShader } from '../../shaders/frag.jsx';
 import { vertShader } from '../../shaders/vert.jsx';
+import { DigitalGlitch } from './fx/glitch.jsx';
 
 var OrbitControls = require('three-orbit-controls')(THREE);
+//import { EventEmitter } from 'wolfy87-eventemitter';
+var EventEmitter = require('wolfy87-eventemitter');
 
-class Letter {
+var EffectComposer = require('three-effectcomposer')(THREE);
+
+
+THREE.DotScreenShader = {
+  uniforms: {
+    "tDiffuse": { type: "t", value: null },
+    "tSize":    { type: "v2", value: new THREE.Vector2( 256, 256 ) },
+    "center":   { type: "v2", value: new THREE.Vector2( 0.5, 0.5 ) },
+    "angle":    { type: "f", value: 1.57 },
+    "scale":    { type: "f", value: 1.0 }
+  },
+  vertexShader: [
+    "varying vec2 vUv;",
+    "void main() {",
+      "vUv = uv;",
+      "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+    "}"
+  ].join("\n"),
+  fragmentShader: [
+    "uniform vec2 center;",
+    "uniform float angle;",
+    "uniform float scale;",
+    "uniform vec2 tSize;",
+    "uniform sampler2D tDiffuse;",
+    "varying vec2 vUv;",
+    "float pattern() {",
+      "float s = sin( angle ), c = cos( angle );",
+      "vec2 tex = vUv * tSize - center;",
+      "vec2 point = vec2( c * tex.x - s * tex.y, s * tex.x + c * tex.y ) * scale;",
+      "return ( sin( point.x ) * sin( point.y ) ) * 4.0;",
+    "}",
+    "void main() {",
+      "vec4 color = texture2D( tDiffuse, vUv );",
+      "float average = ( color.r + color.g + color.b ) / 3.0;",
+      "gl_FragColor = vec4( vec3( average * 10.0 - 5.0 + pattern() ), color.a );",
+    "}"
+  ].join("\n")
+};
+
+THREE.RGBShiftShader = {
+  uniforms: {
+    "tDiffuse": { type: "t", value: null },
+    "amount":   { type: "f", value: 0.005 },
+    "angle":    { type: "f", value: 0.0 }
+  },
+  vertexShader: [
+    "varying vec2 vUv;",
+    "void main() {",
+      "vUv = uv;",
+      "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+    "}"
+  ].join("\n"),
+  fragmentShader: [
+    "uniform sampler2D tDiffuse;",
+    "uniform float amount;",
+    "uniform float angle;",
+    "varying vec2 vUv;",
+    "void main() {",
+      "vec2 offset = amount * vec2( cos(angle), sin(angle));",
+      "vec4 cr = texture2D(tDiffuse, vUv + offset);",
+      "vec4 cga = texture2D(tDiffuse, vUv);",
+      "vec4 cb = texture2D(tDiffuse, vUv - offset);",
+      "gl_FragColor = vec4(cr.r, cga.g, cb.b, cga.a);",
+    "}"
+  ].join("\n")
+};
+
+
+
+class Letter extends EventEmitter {
   constructor( svg, delay ){
+    super();
     this.delay = delay;
     this.create( svg );
   }
@@ -74,9 +147,7 @@ class Letter {
   }
 
   create( svg ){
-    console.log(svg);
     const _d = new Date().getMilliseconds();
-    console.log( _d );
 
     let _complex = svg.complex.complex;
 
@@ -90,10 +161,6 @@ class Letter {
 
     this.bWidth = svg.bWidth;
     this.bHeight = svg.bHeight;
-
-    console.log('elapsed time');
-    console.log( (_d - new Date().getMilliseconds()) / 1000, ' seconds');
-    console.log('------------');
 
     this.fill = svg.fill;
     const _attributes = this.getAnimationAttributes( _complex.positions, _complex.cells );
@@ -142,9 +209,9 @@ class Letter {
   explode (){
     let _t = new Tweenr();
     const _delay = this.delay;
-    const _duration = 0.95;
+    const _duration = 1.55;
 
-    const _ease = 'quadOut';
+    const _ease = 'cosOut';
 
     var options = {
       value: 1,
@@ -164,25 +231,27 @@ class Letter {
     let _reverseFn = ()=> {
       var _o = _.clone( options );
       _o.value = 0;
-      _o.delay = 6;
+      _o.duration = 1.35;
+      _o.ease = 'quadOut';
+      _o.delay = 6 + ( this.delay + 1);
 
-      _t.to( node[0], _o );
+      _t.to( node[0], _o ).on( 'start', ()=> { this.emitEvent('shake') } );
       _o.value = 0.2;
       _t.to( node[1], _o ).on( 'complete' , ()=>{
         options.delay = _delay + 4;
         _t.to( node[0], options ).on('complete', _reverseFn);
         _t.to( node[1], options );
+        _t.to( this.mesh.scale , { value: 5, duration: 0.5 });
       });
     };
 
     _t.to( node[0], options ).on('complete', _reverseFn);
     _t.to( node[1], options );
+    _t.to( this.mesh.scale , { value: 1, duration: 0.5 });
 
   }
 
   get scale(){
-    console.log(this.bWidth, this.bHeight, this.height, this.width);
-
     return {
       sy: Math.min( 1, this.height / this.bHeight),
       sx: Math.min( 1, this.width / this.bWidth)
@@ -211,16 +280,35 @@ class ThreeD {
     var geom = new THREE.PlaneGeometry( 40, 40 );
     var mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wirefame:false });
     this.ground = new THREE.Mesh( geom, mat );
-    this.scene.add(this.ground);
+    //this.scene.add(this.ground);
 
 
     this.ground.position.set( -5, -5, 0 );
 
+
+
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
-    this.camera = new THREE.PerspectiveCamera( 75, this.width / this.height , 0.1, 100 );
-    this.camera.position.set( 0, 0, 8.5 );
+    this.camera = new THREE.PerspectiveCamera( 90, this.width / this.height , 0.1, 10000 );
+    this.camera.position.set( 0, 0, 3 );
+
+    this.composer = new EffectComposer( this.renderer );
+    this.composer.addPass( new EffectComposer.RenderPass( this.scene, this.camera ) );
+
+    //var effect = new EffectComposer.ShaderPass( THREE.DotScreenShader );
+    //effect.uniforms[ 'scale' ].value = 10;
+    //this.composer.addPass( effect );
+
+    this.RGBeffect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
+    this.RGBeffect.uniforms[ 'amount' ].value = 0;
+    this.composer.addPass( this.RGBeffect );
+    this.RGBeffect.renderToScreen = true;
+
+    this.glitchEffect = new EffectComposer.ShaderPass( DigitalGlitch );
+    //this.glitchEffect.uniforms[ 'amount' ].value = 0;
+    this.composer.addPass( this.glitchEffect );
+    //this.glitchEffect.renderToScreen = true;
 
     this.camera.lookAt( new THREE.Vector3() );
 
@@ -240,14 +328,14 @@ class ThreeD {
     point.y = -( point2d.y  - 1 )/ (2 * this.height);
     point.z = 0.5;
 
-    //console.log(point2d.x / this.width);
 
-    return point.unproject( this.camera );
+    return point.unproject ( this.camera );
     //return point;
   }
 
   create( svg ){
     let letter = new Letter( svg, Math.random() * 5 );
+    letter.addListener('shake', ()=>{ this.shake(); });
 
     this.letters.push( letter );
 
@@ -260,7 +348,6 @@ class ThreeD {
     let _x = (letter.x / 612) * 10;
     let _y = (letter.y) / _factor;
 
-    console.log(letter);
     var _vv = this.convertPoint( letter );
 
 
@@ -271,18 +358,58 @@ class ThreeD {
     );
 
 
-    console.log(_vv);
-    letter.mesh.position.set( _x - 3.5, _y + 0.2, 2 );
+    letter.mesh.position.set( _x - 3.15, _y, 0 );
     //letter.mesh.rotation.x = 360 * Math.random();
     letter.explode();
 
-    //console.log( letter.width, letter.height );
-    //console.log( letter.scale.sx, letter.scale.sy );
+  }
+  
+  shake(){
+    if(this.isShaking) return;
+    var count = this.shakeCount;
+
+    var iPos = this.camera.position;
+
+    var _interval = ()=>{
+      var _rumble = Math.random() / ( 10000 / count ) ;
+      let _x = this.camera.position.x + _rumble;
+      let _y = this.camera.position.y + _rumble;
+      let _z = this.camera.position.z;
+
+      _x = ( Math.round( Math.random()) === 0 ) ? _x * -1 : _x;
+      _y = ( Math.round( Math.random()) === 0 ) ? _y * -1 : _y;
+
+      if ( count > 0){
+        this.camera.position.set( _x, _y, _z );
+        console.log(this.isShaking);
+        this.RGBeffect.uniforms[ 'amount' ].value = _rumble * 5;
+        this.RGBeffect.uniforms[ 'angle' ].value = Math.random() * 360;
+        
+        this.isShaking = true;
+        count--;
+      }else{
+        this.isShaking = false;
+        count = this.shakeCount;
+        clearInterval( shake );
+        if (this.shakeCount < this.maxShakeCount){
+          this.shakeCount++;
+        }else{
+          this.shakeCount = 50;
+        }
+        this.RGBeffect.uniforms[ 'amount' ].value = 0;
+        this.camera.position.set( 0, 0, iPos.z );
+        return
+      }
+    };
+
+    var shake = setInterval( _interval, 1);
   }
 
   render(){
     //this.camera.position.set( this.camera.position.x, this.camera.position.y, this.camera.position.z - this.count );
-    this.renderer.render( this.scene, this.camera );
+    
+    this.composer.render( );
+
     for (var _letter in this.letters ){
       //this.letters[_letter].mesh.rotation.y += 0.001//Math.random() / 100
       //this.letters[_letter].mesh.rotation.x += 0.001//Math.random() / 100
@@ -298,7 +425,10 @@ let proto = ThreeD.prototype;
 proto.tweenr = new Tweenr({ defaultEase: 'quadIn' });
 proto.meshCount = 0;
 proto.letters = [];
-proto.count = 0.001;
+proto.count = 0.0005;
+proto.isShaking = false;
+proto.shakeCount = 50;
+proto.maxShakeCount = 125;
 function createNoisyEasing(randomProportion, easingFunction) {
     var normalProportion = 1.0 - randomProportion;
     return function(k) {
