@@ -24,10 +24,78 @@ var svgBbox = require('svg-path-bounding-box');
 
 import { fragShader } from '../../shaders/frag.jsx';
 import { vertShader } from '../../shaders/vert.jsx';
+import { DigitalGlitch } from './fx/glitch.jsx';
 
 var OrbitControls = require('three-orbit-controls')(THREE);
 //import { EventEmitter } from 'wolfy87-eventemitter';
 var EventEmitter = require('wolfy87-eventemitter');
+
+var EffectComposer = require('three-effectcomposer')(THREE);
+
+
+THREE.DotScreenShader = {
+  uniforms: {
+    "tDiffuse": { type: "t", value: null },
+    "tSize":    { type: "v2", value: new THREE.Vector2( 256, 256 ) },
+    "center":   { type: "v2", value: new THREE.Vector2( 0.5, 0.5 ) },
+    "angle":    { type: "f", value: 1.57 },
+    "scale":    { type: "f", value: 1.0 }
+  },
+  vertexShader: [
+    "varying vec2 vUv;",
+    "void main() {",
+      "vUv = uv;",
+      "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+    "}"
+  ].join("\n"),
+  fragmentShader: [
+    "uniform vec2 center;",
+    "uniform float angle;",
+    "uniform float scale;",
+    "uniform vec2 tSize;",
+    "uniform sampler2D tDiffuse;",
+    "varying vec2 vUv;",
+    "float pattern() {",
+      "float s = sin( angle ), c = cos( angle );",
+      "vec2 tex = vUv * tSize - center;",
+      "vec2 point = vec2( c * tex.x - s * tex.y, s * tex.x + c * tex.y ) * scale;",
+      "return ( sin( point.x ) * sin( point.y ) ) * 4.0;",
+    "}",
+    "void main() {",
+      "vec4 color = texture2D( tDiffuse, vUv );",
+      "float average = ( color.r + color.g + color.b ) / 3.0;",
+      "gl_FragColor = vec4( vec3( average * 10.0 - 5.0 + pattern() ), color.a );",
+    "}"
+  ].join("\n")
+};
+
+THREE.RGBShiftShader = {
+  uniforms: {
+    "tDiffuse": { type: "t", value: null },
+    "amount":   { type: "f", value: 0.005 },
+    "angle":    { type: "f", value: 0.0 }
+  },
+  vertexShader: [
+    "varying vec2 vUv;",
+    "void main() {",
+      "vUv = uv;",
+      "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+    "}"
+  ].join("\n"),
+  fragmentShader: [
+    "uniform sampler2D tDiffuse;",
+    "uniform float amount;",
+    "uniform float angle;",
+    "varying vec2 vUv;",
+    "void main() {",
+      "vec2 offset = amount * vec2( cos(angle), sin(angle));",
+      "vec4 cr = texture2D(tDiffuse, vUv + offset);",
+      "vec4 cga = texture2D(tDiffuse, vUv);",
+      "vec4 cb = texture2D(tDiffuse, vUv - offset);",
+      "gl_FragColor = vec4(cr.r, cga.g, cb.b, cga.a);",
+    "}"
+  ].join("\n")
+};
 
 
 
@@ -217,11 +285,30 @@ class ThreeD {
 
     this.ground.position.set( -5, -5, 0 );
 
+
+
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
     this.camera = new THREE.PerspectiveCamera( 90, this.width / this.height , 0.1, 10000 );
-    this.camera.position.set( 0, 0, 4.5 );
+    this.camera.position.set( 0, 0, 3 );
+
+    this.composer = new EffectComposer( this.renderer );
+    this.composer.addPass( new EffectComposer.RenderPass( this.scene, this.camera ) );
+
+    //var effect = new EffectComposer.ShaderPass( THREE.DotScreenShader );
+    //effect.uniforms[ 'scale' ].value = 10;
+    //this.composer.addPass( effect );
+
+    this.RGBeffect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
+    this.RGBeffect.uniforms[ 'amount' ].value = 0;
+    this.composer.addPass( this.RGBeffect );
+    this.RGBeffect.renderToScreen = true;
+
+    this.glitchEffect = new EffectComposer.ShaderPass( DigitalGlitch );
+    //this.glitchEffect.uniforms[ 'amount' ].value = 0;
+    this.composer.addPass( this.glitchEffect );
+    //this.glitchEffect.renderToScreen = true;
 
     this.camera.lookAt( new THREE.Vector3() );
 
@@ -242,7 +329,7 @@ class ThreeD {
     point.z = 0.5;
 
 
-    return point.unproject( this.camera );
+    return point.unproject ( this.camera );
     //return point;
   }
 
@@ -271,7 +358,7 @@ class ThreeD {
     );
 
 
-    letter.mesh.position.set( _x - 3.5, _y + 0.5, 0 );
+    letter.mesh.position.set( _x - 3.15, _y, 0 );
     //letter.mesh.rotation.x = 360 * Math.random();
     letter.explode();
 
@@ -295,6 +382,9 @@ class ThreeD {
       if ( count > 0){
         this.camera.position.set( _x, _y, _z );
         console.log(this.isShaking);
+        this.RGBeffect.uniforms[ 'amount' ].value = _rumble * 5;
+        this.RGBeffect.uniforms[ 'angle' ].value = Math.random() * 360;
+        
         this.isShaking = true;
         count--;
       }else{
@@ -306,6 +396,7 @@ class ThreeD {
         }else{
           this.shakeCount = 50;
         }
+        this.RGBeffect.uniforms[ 'amount' ].value = 0;
         this.camera.position.set( 0, 0, iPos.z );
         return
       }
@@ -317,7 +408,7 @@ class ThreeD {
   render(){
     //this.camera.position.set( this.camera.position.x, this.camera.position.y, this.camera.position.z - this.count );
     
-    this.renderer.render( this.scene, this.camera );
+    this.composer.render( );
 
     for (var _letter in this.letters ){
       //this.letters[_letter].mesh.rotation.y += 0.001//Math.random() / 100
