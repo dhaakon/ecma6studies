@@ -12,11 +12,12 @@ void main() {
   // rotate the triangles
   // each half rotates the opposite direction
   float theta = (1.0 - animate) * (PI * 0.5 ) * sign(centroid.x);
+  float _fact = 25.0;
 
   mat3 rotMat = mat3(
-    vec3(-cos(theta) * 2.0, 3.0, sin(theta) * 4.0),
-    vec3(4.0, 3.0, cos(theta) * 2.0),
-    vec3(-sin(theta) * 3.0, 3.0, 2.0 * cos(theta))
+    vec3(-cos(theta) * _fact, sin(theta) * _fact, sin(theta) * _fact),
+    vec3(cos(theta) * _fact, -cos(theta) * _fact, cos(theta) * _fact),
+    vec3(-sin(theta) * _fact, cos(theta) * _fact, _fact * cos(theta))
   );
 
   // push outward

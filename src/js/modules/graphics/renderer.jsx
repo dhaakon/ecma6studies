@@ -14,7 +14,6 @@ function *shapes( json ){
         clean(_tmp, parent);
       }
     }else if( shape.groupShape ){
-      console.log(shape);
       parent.push( shape );
 
     }else{
@@ -62,7 +61,6 @@ class Group {
     this.gfx.forEach( (el, idx, arr ) => {this.create(el)})
 
     this.getBBox();
-
   }
 
   create( obj, idx, array ){
@@ -77,9 +75,6 @@ class Group {
   }
 
   getBBox(){
-    console.log('------');
-    console.log(this.paths.length);
-
     if (this.paths.length == 1) {
       var bb = this.paths[0].bbox;
       this.x1 = bb.x1;
@@ -141,7 +136,6 @@ class LogoRenderer {
     var gfx = json.letters.children;
 
     for( let obj of shapes( gfx ) ){
-      console.log(obj);
       var _group = new Group( obj, this.canvas );
       this.groups.push(_group);
     }

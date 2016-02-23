@@ -38,6 +38,8 @@ domready( function(){
       _path.bWidth = _g.width;
       _path.bHeight = _g.height;
 
+      console.log(_path);
+
       _threeD.create( _path );
     }
   }

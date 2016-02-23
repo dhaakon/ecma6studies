@@ -26,9 +26,14 @@ import { fragShader } from '../../shaders/frag.jsx';
 import { vertShader } from '../../shaders/vert.jsx';
 
 var OrbitControls = require('three-orbit-controls')(THREE);
+//import { EventEmitter } from 'wolfy87-eventemitter';
+var EventEmitter = require('wolfy87-eventemitter');
 
-class Letter {
+
+
+class Letter extends EventEmitter {
   constructor( svg, delay ){
+    super();
     this.delay = delay;
     this.create( svg );
   }
@@ -74,9 +79,7 @@ class Letter {
   }
 
   create( svg ){
-    console.log(svg);
     const _d = new Date().getMilliseconds();
-    console.log( _d );
 
     let _complex = svg.complex.complex;
 
@@ -90,10 +93,6 @@ class Letter {
 
     this.bWidth = svg.bWidth;
     this.bHeight = svg.bHeight;
-
-    console.log('elapsed time');
-    console.log( (_d - new Date().getMilliseconds()) / 1000, ' seconds');
-    console.log('------------');
 
     this.fill = svg.fill;
     const _attributes = this.getAnimationAttributes( _complex.positions, _complex.cells );
@@ -142,9 +141,9 @@ class Letter {
   explode (){
     let _t = new Tweenr();
     const _delay = this.delay;
-    const _duration = 0.95;
+    const _duration = 1.55;
 
-    const _ease = 'quadOut';
+    const _ease = 'cosOut';
 
     var options = {
       value: 1,
@@ -164,25 +163,27 @@ class Letter {
     let _reverseFn = ()=> {
       var _o = _.clone( options );
       _o.value = 0;
-      _o.delay = 6;
+      _o.duration = 1.35;
+      _o.ease = 'quadOut';
+      _o.delay = 6 + ( this.delay + 1);
 
-      _t.to( node[0], _o );
+      _t.to( node[0], _o ).on( 'start', ()=> { this.emitEvent('shake') } );
       _o.value = 0.2;
       _t.to( node[1], _o ).on( 'complete' , ()=>{
         options.delay = _delay + 4;
         _t.to( node[0], options ).on('complete', _reverseFn);
         _t.to( node[1], options );
+        _t.to( this.mesh.scale , { value: 5, duration: 0.5 });
       });
     };
 
     _t.to( node[0], options ).on('complete', _reverseFn);
     _t.to( node[1], options );
+    _t.to( this.mesh.scale , { value: 1, duration: 0.5 });
 
   }
 
   get scale(){
-    console.log(this.bWidth, this.bHeight, this.height, this.width);
-
     return {
       sy: Math.min( 1, this.height / this.bHeight),
       sx: Math.min( 1, this.width / this.bWidth)
@@ -211,7 +212,7 @@ class ThreeD {
     var geom = new THREE.PlaneGeometry( 40, 40 );
     var mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wirefame:false });
     this.ground = new THREE.Mesh( geom, mat );
-    this.scene.add(this.ground);
+    //this.scene.add(this.ground);
 
 
     this.ground.position.set( -5, -5, 0 );
@@ -219,8 +220,8 @@ class ThreeD {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
-    this.camera = new THREE.PerspectiveCamera( 75, this.width / this.height , 0.1, 100 );
-    this.camera.position.set( 0, 0, 8.5 );
+    this.camera = new THREE.PerspectiveCamera( 90, this.width / this.height , 0.1, 10000 );
+    this.camera.position.set( 0, 0, 4.5 );
 
     this.camera.lookAt( new THREE.Vector3() );
 
@@ -240,7 +241,6 @@ class ThreeD {
     point.y = -( point2d.y  - 1 )/ (2 * this.height);
     point.z = 0.5;
 
-    //console.log(point2d.x / this.width);
 
     return point.unproject( this.camera );
     //return point;
@@ -248,6 +248,7 @@ class ThreeD {
 
   create( svg ){
     let letter = new Letter( svg, Math.random() * 5 );
+    letter.addListener('shake', ()=>{ this.shake(); });
 
     this.letters.push( letter );
 
@@ -260,7 +261,6 @@ class ThreeD {
     let _x = (letter.x / 612) * 10;
     let _y = (letter.y) / _factor;
 
-    console.log(letter);
     var _vv = this.convertPoint( letter );
 
 
@@ -271,18 +271,54 @@ class ThreeD {
     );
 
 
-    console.log(_vv);
-    letter.mesh.position.set( _x - 3.5, _y + 0.2, 2 );
+    letter.mesh.position.set( _x - 3.5, _y + 0.5, 0 );
     //letter.mesh.rotation.x = 360 * Math.random();
     letter.explode();
 
-    //console.log( letter.width, letter.height );
-    //console.log( letter.scale.sx, letter.scale.sy );
+  }
+  
+  shake(){
+    if(this.isShaking) return;
+    var count = this.shakeCount;
+
+    var iPos = this.camera.position;
+
+    var _interval = ()=>{
+      var _rumble = Math.random() / ( 10000 / count ) ;
+      let _x = this.camera.position.x + _rumble;
+      let _y = this.camera.position.y + _rumble;
+      let _z = this.camera.position.z;
+
+      _x = ( Math.round( Math.random()) === 0 ) ? _x * -1 : _x;
+      _y = ( Math.round( Math.random()) === 0 ) ? _y * -1 : _y;
+
+      if ( count > 0){
+        this.camera.position.set( _x, _y, _z );
+        console.log(this.isShaking);
+        this.isShaking = true;
+        count--;
+      }else{
+        this.isShaking = false;
+        count = this.shakeCount;
+        clearInterval( shake );
+        if (this.shakeCount < this.maxShakeCount){
+          this.shakeCount++;
+        }else{
+          this.shakeCount = 50;
+        }
+        this.camera.position.set( 0, 0, iPos.z );
+        return
+      }
+    };
+
+    var shake = setInterval( _interval, 1);
   }
 
   render(){
     //this.camera.position.set( this.camera.position.x, this.camera.position.y, this.camera.position.z - this.count );
+    
     this.renderer.render( this.scene, this.camera );
+
     for (var _letter in this.letters ){
       //this.letters[_letter].mesh.rotation.y += 0.001//Math.random() / 100
       //this.letters[_letter].mesh.rotation.x += 0.001//Math.random() / 100
@@ -298,7 +334,10 @@ let proto = ThreeD.prototype;
 proto.tweenr = new Tweenr({ defaultEase: 'quadIn' });
 proto.meshCount = 0;
 proto.letters = [];
-proto.count = 0.001;
+proto.count = 0.0005;
+proto.isShaking = false;
+proto.shakeCount = 50;
+proto.maxShakeCount = 125;
 function createNoisyEasing(randomProportion, easingFunction) {
     var normalProportion = 1.0 - randomProportion;
     return function(k) {
