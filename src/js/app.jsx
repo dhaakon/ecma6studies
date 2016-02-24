@@ -3,6 +3,7 @@ require("babel-core/register");
 
 var domready = require('domready');
 
+import { DancerComponent } from './modules/dancer.jsx';
 
 import { Grid } from './modules/grid.jsx'
 import { View } from './modules/view.jsx'
@@ -41,6 +42,8 @@ domready( function(){
       _threeD.create( _path );
     }
   }
+
+  var _dancerComponent = new DancerComponent();
 
 
 
