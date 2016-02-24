@@ -44,6 +44,12 @@ domready( function(){
   }
 
   var _dancerComponent = new DancerComponent();
+  _dancerComponent.addListener('kick', ()=>{
+    console.log('kick!');
+
+    //_threeD.explode();
+    _threeD.shake();
+  });
 
 
 
