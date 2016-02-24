@@ -25,6 +25,7 @@ var svgBbox = require('svg-path-bounding-box');
 import { fragShader } from '../../shaders/frag.jsx';
 import { vertShader } from '../../shaders/vert.jsx';
 import { DigitalGlitch } from './fx/glitch.jsx';
+import { VignetteShader } from './fx/vignette.jsx';
 
 var OrbitControls = require('three-orbit-controls')(THREE);
 //import { EventEmitter } from 'wolfy87-eventemitter';
@@ -233,10 +234,10 @@ class Letter extends EventEmitter {
       _o.value = 0;
       _o.duration = 1.35;
       _o.ease = 'quadOut';
-      _o.delay = 6 + ( this.delay + 1);
+      _o.delay = 6 + ( this.delay + 2);
 
       _t.to( node[0], _o ).on( 'start', ()=> { this.emitEvent('shake') } );
-      _o.value = 0.2;
+      _o.value = 0;
       _t.to( node[1], _o ).on( 'complete' , ()=>{
         options.delay = _delay + 4;
         _t.to( node[0], options ).on('complete', _reverseFn);
@@ -300,16 +301,17 @@ class ThreeD {
     //effect.uniforms[ 'scale' ].value = 10;
     //this.composer.addPass( effect );
 
+    this.vignetteEffect = new EffectComposer.ShaderPass( VignetteShader );
+    this.vignetteEffect.uniforms[ 'offset' ].value = 0.4;
+    this.vignetteEffect.uniforms[ 'darkness' ].value = 0.9;
+    this.vignetteEffect.renderToScreen = true;
+
     this.RGBeffect = new EffectComposer.ShaderPass( THREE.RGBShiftShader );
     this.RGBeffect.uniforms[ 'amount' ].value = 0;
-    this.composer.addPass( this.RGBeffect );
     this.RGBeffect.renderToScreen = true;
 
-    this.glitchEffect = new EffectComposer.ShaderPass( DigitalGlitch );
-    //this.glitchEffect.uniforms[ 'amount' ].value = 0;
-    this.composer.addPass( this.glitchEffect );
-    //this.glitchEffect.renderToScreen = true;
-
+    this.composer.addPass( this.RGBeffect );
+    //this.composer.addPass( this.vignetteEffect );
     this.camera.lookAt( new THREE.Vector3() );
 
     this.render();
@@ -371,17 +373,17 @@ class ThreeD {
     var iPos = this.camera.position;
 
     var _interval = ()=>{
-      var _rumble = Math.random() / ( 10000 / count ) ;
+      var _rumble = Math.random() / ( 20000 / count ) ;
       let _x = this.camera.position.x + _rumble;
       let _y = this.camera.position.y + _rumble;
-      let _z = this.camera.position.z;
+      let _z = this.camera.position.z + (_rumble * 1.5);
 
       _x = ( Math.round( Math.random()) === 0 ) ? _x * -1 : _x;
       _y = ( Math.round( Math.random()) === 0 ) ? _y * -1 : _y;
+      _z = ( Math.round( Math.random()) === 0 ) ? _z : _z;
 
       if ( count > 0){
         this.camera.position.set( _x, _y, _z );
-        console.log(this.isShaking);
         this.RGBeffect.uniforms[ 'amount' ].value = _rumble * 5;
         this.RGBeffect.uniforms[ 'angle' ].value = Math.random() * 360;
         
@@ -391,13 +393,15 @@ class ThreeD {
         this.isShaking = false;
         count = this.shakeCount;
         clearInterval( shake );
+
         if (this.shakeCount < this.maxShakeCount){
           this.shakeCount++;
         }else{
           this.shakeCount = 50;
         }
+        
         this.RGBeffect.uniforms[ 'amount' ].value = 0;
-        this.camera.position.set( 0, 0, iPos.z );
+        this.camera.position.set( 0, 0,  3);
         return
       }
     };
@@ -428,7 +432,8 @@ proto.letters = [];
 proto.count = 0.0005;
 proto.isShaking = false;
 proto.shakeCount = 50;
-proto.maxShakeCount = 125;
+proto.maxShakeCount = 85;
+
 function createNoisyEasing(randomProportion, easingFunction) {
     var normalProportion = 1.0 - randomProportion;
     return function(k) {
