@@ -32,9 +32,9 @@ domready( function(){
   for( var _group in groups ){
     var _g = groups[_group];
 
-
     for( var _p in _g.paths ){
       var _path = _g.paths[_p];
+
       _path.bWidth = _g.width;
       _path.bHeight = _g.height;
 

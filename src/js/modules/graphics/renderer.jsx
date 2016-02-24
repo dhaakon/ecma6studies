@@ -25,6 +25,7 @@ function *shapes( json ){
 
   for( var object in json ){
     var _obj = json[object];
+    console.log(_obj);
 
     _obj.gfx = [];
 
