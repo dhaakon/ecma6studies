@@ -36,6 +36,8 @@ THREE.RGBShiftShader = require('./fx/RGBShiftShader.jsx');
 class Letter extends EventEmitter {
   constructor( svg, delay ){
     super();
+    this.tween = new Tweenr();
+    this.isExploding = false;
     this.delay = delay;
     this.create( svg );
   }
@@ -136,11 +138,51 @@ class Letter extends EventEmitter {
     this.mesh.receiveShadow = false;
   }
 
+  explode(){
+     if( this.isExploding ) return;
+     this.isExploding = true;
+     console.log('exploding');
+   
+     const _delay = this.delay;
+     const _duration = 1.00;
+     const _ease = 'cosOut';
+
+     let _t = this.tween;
+     let node = [ this.material.uniforms.animate, this.material.uniforms.scale ]
+
+    var options = {
+      value: 1,
+      duration: _duration,
+      delay: _delay,
+      ease: _ease
+    };
+
+    var _o = {
+      value : 0,
+      duration:1.35,
+      ease:'quadOut',
+      delay: 0
+    };
+
+    _t.to( node[0], _o ).on( 'start', ()=> { this.emitEvent('shake') } );
+
+    // reset value for animation
+    _o.value = 0;
+
+    _t.to( node[1], _o ).on( 'complete' , ()=>{
+      options.delay = _delay + 4;
+      _t.to( node[0], options );
+      _t.to( node[1], options );
+      this.isExploding = false;
+    });
+  }
+
+  
+/*
   explode (){
-    let _t = new Tweenr();
+    let _t = this.tween;
     const _delay = this.delay;
     const _duration = 1.00;
-
     const _ease = 'cosOut';
 
     var options = {
@@ -159,14 +201,19 @@ class Letter extends EventEmitter {
     };
 
     let _reverseFn = ()=> {
-      var _o = _.clone( options );
-      _o.value = 0;
-      _o.duration = 1.35;
-      _o.ease = 'quadOut';
-      _o.delay = 6 + ( this.delay + 2);
+      
+      var _o = {
+        value : 0,
+        duration:1.35,
+        ease:'quadOut',
+        delay: 6 + ( this.delay + 2)
+      };
 
       _t.to( node[0], _o ).on( 'start', ()=> { this.emitEvent('shake') } );
+
+      // reset value for animation
       _o.value = 0;
+
       _t.to( node[1], _o ).on( 'complete' , ()=>{
         options.delay = _delay + 4;
         _t.to( node[0], options ).on('complete', _reverseFn);
@@ -175,11 +222,13 @@ class Letter extends EventEmitter {
       });
     };
 
+    // animate in
     _t.to( node[0], options ).on('complete', _reverseFn);
     _t.to( node[1], options );
     
     _t.to( this.mesh.scale , { value: 1, duration: 0.5 });
   }
+ */
 
   get scale(){
     return {
@@ -264,9 +313,7 @@ class ThreeD {
     this.scene.add( letter.mesh );
 
     let _v = new THREE.Vector3( 0, 0, 0);
-
     let _factor = 100;
-
     let _x = (letter.x / 612) * 10;
     let _y = (letter.y) / _factor;
 
@@ -287,6 +334,28 @@ class ThreeD {
     var ran = Math.floor( Math.random() * this.letters.length );
     this.letters[ran].explode();
   }
+
+  shatter( perc ){
+    for( var _letter in this.letters ){
+      let _l = this.letters[_letter];
+      let _neg = (Math.round( Math.random() ) === 1) ? -1 : 1;
+      if ( _neg !== -1 || !_l.isExploding ){
+        var jitter = Math.random() / 1000;
+        var impact = perc/20;
+        _l.material.uniforms.animate.value = 1 - jitter - impact;
+      }
+    }
+  }
+
+  reset( perc ){
+    for( var _letter in this.letters ){
+      //let _neg = (Math.round( Math.random() ) === 1) ? -1 : 1;
+      let _l = this.letters[_letter];
+      
+      if ( !_l.isExploding ) _l.material.uniforms.animate.value = 1;
+    }
+  }
+
 
   shake(){
     if(this.isShaking) return;

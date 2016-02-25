@@ -44,13 +44,18 @@ domready( function(){
   }
 
   var _dancerComponent = new DancerComponent();
-  _dancerComponent.addListener('kick', ()=>{
-    console.log('kick!');
+  _dancerComponent.addListener('kick', (msg)=>{
+    console.log(msg);
+
+    _threeD.explode();
+    //_threeD.shake();
+    //_threeD.shatter( msg );
+  });
+  _dancerComponent.addListener('offkick', ()=>{
 
     //_threeD.explode();
-    _threeD.shake();
+    //_threeD.reset();
   });
-
 
 
   //for ( var path in animatedPaths ){

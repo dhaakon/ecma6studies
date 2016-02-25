@@ -9,6 +9,7 @@ class DancerComponent extends EventEmitter {
     this.dancer = new Dancer();
 
     this.audio = new Audio();
+    this.audio.loop = true;
     this.audio.src = './audio/track01.mp3';
 
     this.dancer.load( this.audio );
@@ -20,20 +21,24 @@ class DancerComponent extends EventEmitter {
   }
 
   onKick(msg){
-    this.emitEvent('kick');
+    console.log(msg);
+    this.emitEvent('kick', [msg]);
     //console.log('kick!');
   }
 
   offKick(msg){
+    this.emitEvent('offkick');
+
+    //console.log(this, msg);
     //console.log('no kick');
 
   }
 
   get kick(){
     return {
-      onKick: ()=> {this.onKick()},
-      offKick: ()=> {this.offKick()},
-      threshold: 0.22
+      onKick: (msg)=> {this.onKick(msg)},
+      offKick: (msg)=> {this.offKick(msg)},
+      threshold: 0.1
     }
   }
   set kick( kick ){
