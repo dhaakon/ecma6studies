@@ -6,22 +6,26 @@ class DancerComponent extends EventEmitter {
 
     super();
 
+    this.fft = document.getElementById('fft');
+
     this.dancer = new Dancer();
+    
 
     this.audio = new Audio();
     this.audio.loop = true;
     this.audio.src = './audio/track01.mp3';
 
+    //this.spectrum = this.dancer.getSpectrum();
+
     this.dancer.load( this.audio );
 
     let kick = this.dancer.createKick( this.kick );
-
     kick.on();
+    
     this.dancer.play();
   }
 
   onKick(msg){
-    console.log(msg);
     this.emitEvent('kick', [msg]);
     //console.log('kick!');
   }

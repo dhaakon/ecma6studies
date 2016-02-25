@@ -38,6 +38,7 @@ class Letter extends EventEmitter {
     super();
     this.tween = new Tweenr();
     this.isExploding = false;
+    this.isAnimateingIn = true;
     this.delay = delay;
     this.create( svg );
   }
@@ -138,10 +139,9 @@ class Letter extends EventEmitter {
     this.mesh.receiveShadow = false;
   }
 
-  explode(){
+  explode( perc ){
      if( this.isExploding ) return;
      this.isExploding = true;
-     console.log('exploding');
    
      const _delay = this.delay;
      const _duration = 1.00;
@@ -164,16 +164,16 @@ class Letter extends EventEmitter {
       delay: 0
     };
 
-    _t.to( node[0], _o ).on( 'start', ()=> { this.emitEvent('shake') } );
+    _t.to( node[0], _o ).on( 'start', ()=> { this.emitEvent('shake', [perc]) } );
 
     // reset value for animation
     _o.value = 0;
 
     _t.to( node[1], _o ).on( 'complete' , ()=>{
-      options.delay = _delay + 4;
-      _t.to( node[0], options );
+      options.delay = 0;
+      _t.to( node[0], options ).on( 'complete', ()=> { this.isExploding = false; } );
       _t.to( node[1], options );
-      this.isExploding = false;
+      
     });
   }
 
@@ -182,7 +182,7 @@ class Letter extends EventEmitter {
     const _delay = Math.random();
     const _duration = 0.65;
     const _ease = 'cosOut';
-    this.isAnimateingIn = true;
+    
 
     var options = {
       value: 1,
@@ -328,7 +328,7 @@ class ThreeD {
 
   create( svg ){
     let letter = new Letter( svg, Math.random() * 5 );
-    letter.addListener('shake', ()=>{ this.shake(); });
+    letter.addListener('shake', (perc)=>{ this.shake(perc); });
 
     this.letters.push( letter );
 
@@ -353,16 +353,16 @@ class ThreeD {
     letter.animateIn();
   }
   
-  explode(){
+  explode( perc ){
     var ran = Math.floor( Math.random() * this.letters.length );
-    this.letters[ran].explode();
+    this.letters[ran].explode( perc );
   }
 
   shatter( perc ){
     for( var _letter in this.letters ){
       let _l = this.letters[_letter];
       let _neg = (Math.round( Math.random() ) === 1) ? -1 : 1;
-      if ( _neg !== -1 || !_l.isExploding ){
+      if ( _neg !== -1 || !_l.isExploding || !_l.isAnimateingIn ){
         var jitter = Math.random() / 1000;
         var impact = perc/20;
         _l.material.uniforms.animate.value = 1 - jitter - impact;
@@ -375,30 +375,37 @@ class ThreeD {
       //let _neg = (Math.round( Math.random() ) === 1) ? -1 : 1;
       let _l = this.letters[_letter];
       
-      if ( !_l.isExploding ) _l.material.uniforms.animate.value = 1;
+      if ( !_l.isExploding || !_l.isAnimateingIn ) {
+        _l.material.uniforms.animate.value = 1;
+        _l.material.uniforms.scale.value = 1;
+      }
     }
   }
 
 
-  shake(){
+  shake( perc ){
     if(this.isShaking) return;
-    var count = this.shakeCount;
 
+    
+    var count = this.shakeCount;
     var iPos = this.camera.position;
 
     var _interval = ()=>{
-      var _rumble = Math.random() / ( 20000 / count ) ;
+      var _rumble = perc/25;
+
+      _rumble = (isNaN(_rumble)) ? 0.12 : _rumble;
+
       let _x = this.camera.position.x + _rumble;
       let _y = this.camera.position.y + _rumble;
-      let _z = this.camera.position.z + (_rumble * 1.5);
+      let _z = this.camera.position.z + ( ( Math.round( Math.random()) === 0 ) ? _rumble : -(_rumble));
 
       _x = ( Math.round( Math.random()) === 0 ) ? _x * -1 : _x;
       _y = ( Math.round( Math.random()) === 0 ) ? _y * -1 : _y;
-      _z = ( Math.round( Math.random()) === 0 ) ? _z : _z;
+      _z = ( isNaN(_z) ) ? 3 : _z;
 
       if ( count > 0){
-        this.camera.position.set( _x, _y, _z );
-        this.RGBeffect.uniforms[ 'amount' ].value = _rumble * 5;
+        this.camera.position.set( _x, _y, ( !isNaN(_z) ) ? _z : 3 );
+        this.RGBeffect.uniforms[ 'amount' ].value = perc/15;
         this.RGBeffect.uniforms[ 'angle' ].value = Math.random() * 360;
         this.isShaking = true;
         count--;

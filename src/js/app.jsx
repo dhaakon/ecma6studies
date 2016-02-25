@@ -43,13 +43,15 @@ domready( function(){
     }
   }
 
+  let _threshold = 0.23;
+
   var _dancerComponent = new DancerComponent();
   _dancerComponent.addListener('kick', (msg)=>{
-    console.log(msg);
 
-    _threeD.explode();
-    //_threeD.shake();
+    console.log(msg);
     //_threeD.shatter( msg );
+    if( msg > _threshold ) _threeD.explode( msg );
+    if( msg ) _threeD.shake( msg / 5 );
   });
   _dancerComponent.addListener('offkick', ()=>{
 
