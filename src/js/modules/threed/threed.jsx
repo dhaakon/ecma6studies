@@ -126,8 +126,8 @@ class Letter extends EventEmitter {
       uniforms:{
         color:{ type:'c', value: _color },
         opacity: { type:'f', value: 1 },
-        scale: { type:'f', value:1 },
-        animate: { type:'f', value: 1 }
+        scale: { type:'f', value:0 },
+        animate: { type:'f', value: 0 }
       }
     };
 
@@ -175,6 +175,28 @@ class Letter extends EventEmitter {
       _t.to( node[1], options );
       this.isExploding = false;
     });
+  }
+
+  animateIn(){
+    let _t = this.tween;
+    const _delay = Math.random();
+    const _duration = 0.65;
+    const _ease = 'cosOut';
+    this.isAnimateingIn = true;
+
+    var options = {
+      value: 1,
+      duration: _duration,
+      delay: _delay,
+      ease: _ease
+    };  
+    let node = [ this.material.uniforms.animate, this.material.uniforms.scale ]
+
+
+    _t.to( node[0], options ).on('complete', ()=>{ this.isAnimateingIn = false; });
+    _t.to( node[1], options );
+    
+    _t.to( this.mesh.scale , { value: 1, duration: 0.5 });
   }
 
   
@@ -328,6 +350,7 @@ class ThreeD {
     letter.mesh.position.set( _x - 3.15, _y, 0 );
     //letter.mesh.rotation.x = 360 * Math.random();
     //letter.explode();
+    letter.animateIn();
   }
   
   explode(){
